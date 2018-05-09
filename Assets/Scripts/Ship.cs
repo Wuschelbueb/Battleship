@@ -6,10 +6,10 @@ using System.Linq;
 /*
  * Todo:
  * - Reload times
- * 
- * 
- * 
- * 
+ * - Rock 'n' Roll
+ * - Collision & Cannonball deletion & Healthbar & Sinking
+ * - Smoke & destruction
+ * - Compass around it
  */
 
 
@@ -44,6 +44,8 @@ public class Ship : MonoBehaviour {
     private float TimeAtLastClick = float.MinValue;
 
     private System.Random random = new System.Random();
+
+    private GameObject Compass;
 
     private Vector3 TargetDirectionVector { get
         {
@@ -92,11 +94,13 @@ public class Ship : MonoBehaviour {
 
     void Awake () {
         InitialiseAudioSources();
+        Compass = MeshGenerator.CreateCompass();
+        Compass.transform.parent = transform;
     }
 
 	// Use this for initialization
 	void Start () {
-
+        MeshGenerator.MeshGenTest();
 	}
 
     // Update is called once per frame

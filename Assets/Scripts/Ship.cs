@@ -6,16 +6,15 @@ using System.Linq;
 /*
  * Todo:
  * - Reload times
- * - Rock 'n' Roll
+ * - Rock 'n' Pitch
  * - Collision & Cannonball deletion & Healthbar & Sinking
  * - Smoke & destruction
- * - Compass around it
  */
 
 
 public class Ship : MonoBehaviour {
 
-    [SerializeField] KeyCode Left, Right;
+    [SerializeField] KeyCode LeftKey, RightKey, FireKey;
 
     [SerializeField] float Speed = 1f;
 
@@ -35,9 +34,15 @@ public class Ship : MonoBehaviour {
 
     [SerializeField] GameObject CannonBall;
 
+    [SerializeField] float MaxFireDelay;
+
     [SerializeField] float ReloadTime;
 
-    private List<AudioSource> Audio;
+    [SerializeField] Material CompassMaterial;
+
+    [SerializeField] float HitPoints = 100;
+
+    private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
 
     private float CurrentDirectionAngle, DeltaAngle;
 
@@ -57,45 +62,62 @@ public class Ship : MonoBehaviour {
     }
 
     void InitialiseAudioSources () {
-        Audio = new List<AudioSource>();
-        foreach (var clip in GunSounds)
+        LeftGunAudioSources = new List<AudioSource>();
+        RightGunAudioSources = new List<AudioSource>();
+
+        foreach (var leftGun in LeftGuns)
         {
             AudioSource source = gameObject.AddComponent<AudioSource>();
             source.playOnAwake = false;
-            source.clip = clip;
-            Audio.Add(source);
+            source.clip = GunSounds[random.Next(GunSounds.Count)];
+            LeftGunAudioSources.Add(source);
+        }
+
+        foreach (var rightGun in RightGuns)
+        {
+            AudioSource source = gameObject.AddComponent<AudioSource>();
+            source.playOnAwake = false;
+            source.clip = GunSounds[random.Next(GunSounds.Count)];
+            RightGunAudioSources.Add(source);
         }
     }
 
+
+    IEnumerator DelayedCannonBallInstantiation (float delay, Transform gunPosition, bool LeftSide) {
+        yield return new WaitForSeconds(delay);
+        GameObject cannonBall = Instantiate(CannonBall, gunPosition.position, Quaternion.identity);
+        //Rigidbody ballsRigidbody = cannonBall.AddComponent<Rigidbody>();
+
+        Vector3 fireDirection = LeftSide ? -transform.right : transform.right;
+
+        cannonBall.GetComponent<Rigidbody>().AddForce(2000 * (4 * fireDirection + 0.3f *Vector3.up), ForceMode.Force);
+    }
+
     void Fire (bool LeftSide) {
-        
-        const float MaxDelay = 2f;
 
         List<Transform> Guns = LeftSide ? LeftGuns : RightGuns;
         Vector3 Direction = LeftSide ? -transform.right : transform.right;
+        List<AudioSource> sounds = LeftSide ? LeftGunAudioSources : RightGunAudioSources;
 
-        float[] delays = Guns.Select(g => (float)random.NextDouble() * MaxDelay).ToArray();
+        float[] delays = Guns.Select(g => (float)random.NextDouble() * MaxFireDelay).ToArray();
 
         for (int i = 0; i < Guns.Count; i++)
         {
-            // TODO: this does not work as intended, as 1 Audiosource cannot play twice at the same time.
-            Audio[random.Next(Audio.Count)].PlayDelayed(delays[i]);
+            sounds[i].PlayDelayed(delays[i]);
+
+            StartCoroutine(DelayedCannonBallInstantiation(delays[i], Guns[i], LeftSide));
         }
 
-        foreach (var gun in Guns)
-        {
-            GameObject cannonBall = Instantiate(CannonBall, transform.position + Direction, Quaternion.identity);
-            Rigidbody ballsRigidbody = cannonBall.AddComponent<Rigidbody>();
-            ballsRigidbody.AddForce( 100 * (5 * Direction + Vector3.up), ForceMode.Force);
-        }
 
 
     }
 
     void Awake () {
         InitialiseAudioSources();
-        Compass = MeshGenerator.CreateCompass();
+        Compass = MeshGenerator.CreateCompass(50f, 5f, 20f, 40);
         Compass.transform.parent = transform;
+        Compass.transform.position += 1.5f * Vector3.up;
+        Compass.GetComponent<MeshRenderer>().material = CompassMaterial;
     }
 
 	// Use this for initialization
@@ -105,10 +127,38 @@ public class Ship : MonoBehaviour {
 
     // Update is called once per frame
 
-    void Update()
+    void FixedUpdate()
     {
+        if (Input.GetKey(FireKey))
+        {
+            if (Input.GetKeyDown(LeftKey)) {
+                Fire(true);
+            }
+            if (Input.GetKeyDown(RightKey)) {
+                Fire(false);
+            }
+        } else  {
+            if (Input.GetKey(LeftKey) && !Input.GetKey(RightKey))
+            {
+                TargetDirectionAngle += InputTurnSpeed * Time.deltaTime;
+                if (TargetDirectionAngle > 180f)
+                {
+                    TargetDirectionAngle -= 360f;
+                }
+            }
+            if (Input.GetKey(RightKey) && !Input.GetKey(LeftKey))
+            {
+                TargetDirectionAngle -= InputTurnSpeed * Time.deltaTime;
+                if (TargetDirectionAngle <= -180f)
+                {
+                    TargetDirectionAngle += 360f;
+                }
+            }
+        }
+
+        /*
         // Fire!
-        if (Input.GetKeyUp(Left) && !Input.GetKeyUp(Right))
+        if (Input.GetKeyUp(LeftKey) && !Input.GetKeyUp(RightKey))
         {
             if (Time.time - TimeAtLastClick <= DoublePressThresholdTime)
             {
@@ -119,7 +169,7 @@ public class Ship : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyUp(Right) && !Input.GetKeyUp(Left))
+        if (Input.GetKeyUp(RightKey) && !Input.GetKeyUp(LeftKey))
         {
             if (Time.time - TimeAtLastClick <= DoublePressThresholdTime)
             {
@@ -133,14 +183,14 @@ public class Ship : MonoBehaviour {
         }
 
         // Treat Movement Input
-        if (Input.GetKey(Left) && !Input.GetKey(Right)) {
+        if (Input.GetKey(LeftKey) && !Input.GetKey(RightKey)) {
             TargetDirectionAngle += InputTurnSpeed * Time.deltaTime;
             if (TargetDirectionAngle > 180f)
             {
                 TargetDirectionAngle -= 360f;
             }
         }
-        if (Input.GetKey(Right) && !Input.GetKey(Left))
+        if (Input.GetKey(RightKey) && !Input.GetKey(LeftKey))
         {
             TargetDirectionAngle -= InputTurnSpeed * Time.deltaTime;
             if (TargetDirectionAngle <= -180f)
@@ -148,7 +198,7 @@ public class Ship : MonoBehaviour {
                 TargetDirectionAngle += 360f;
             }
         }
-
+        */
 
 
         // Move forward
@@ -174,6 +224,9 @@ public class Ship : MonoBehaviour {
                                      -1 * ShipTurnSpeed * Time.deltaTime,
                                      +1 * ShipTurnSpeed * Time.deltaTime)
                         );
+
+        Compass.transform.forward = TargetDirectionVector;
+
 
     }
 

@@ -86,6 +86,9 @@ public class Ship : MonoBehaviour {
     IEnumerator DelayedCannonBallInstantiation (float delay, Transform gunPosition, bool LeftSide) {
         yield return new WaitForSeconds(delay);
         GameObject cannonBall = Instantiate(CannonBall, gunPosition.position, Quaternion.identity);
+
+        cannonBall.name += "_Player1";
+
         //Rigidbody ballsRigidbody = cannonBall.AddComponent<Rigidbody>();
 
         Vector3 fireDirection = LeftSide ? -transform.right : transform.right;
@@ -118,6 +121,8 @@ public class Ship : MonoBehaviour {
         Compass.transform.parent = transform;
         Compass.transform.position += 1.5f * Vector3.up;
         Compass.GetComponent<MeshRenderer>().material = CompassMaterial;
+
+        AddTriggers();
     }
 
 	// Use this for initialization
@@ -256,4 +261,33 @@ public class Ship : MonoBehaviour {
         Gizmos.DrawLine(transform.position, 1.1f * RadiusOfGizmosCircle * TargetDirectionVector + transform.position);
 
     }
+
+    void OnTriggerEnter (Collider collider) {
+        //Debug.Log(gameObject.name + ": Detected collision with " + collider.name);
+    }
+
+    void AddTriggers () {
+
+
+
+        var meshes = GameObject.FindObjectsOfType<MeshFilter>();
+
+        foreach (var item in meshes
+                 .Where(m=>m.gameObject.transform.parent != null)
+                 .Where(m=>m.gameObject.transform.parent.parent != null)
+                 .Where(m => m.gameObject.transform.parent.parent == gameObject.transform))
+        {
+            if (item.gameObject.name.Contains("color")) continue;
+
+            var col = item.gameObject.AddComponent<MeshCollider>();
+            col.sharedMesh = item.sharedMesh;
+            col.convex = true;
+            col.inflateMesh = true;
+            col.isTrigger = true;
+        }
+
+
+    }
+
+
 }

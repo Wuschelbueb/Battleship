@@ -20,7 +20,17 @@ public class CannonBall : MonoBehaviour {
 	}
 
     void OnTriggerEnter (Collider collider) {
-        Debug.Log("Collided with " + collider.tag);
+
+        if (collider.tag != "Water")
+        {
+
+            Debug.Log("Collided with " + collider.tag);
+        }
+
+        if (collider.tag.Equals("Ship"))
+        {
+
+        }
 
 
         if (collider.tag == "Water")

@@ -119,6 +119,7 @@ public class Ship : MonoBehaviour {
         InitialiseAudioSources();
         Compass = MeshGenerator.CreateCompass(50f, 5f, 20f, 40);
         Compass.transform.parent = transform;
+        Compass.transform.position = transform.position; // testing...
         Compass.transform.position += 1.5f * Vector3.up;
         Compass.GetComponent<MeshRenderer>().material = CompassMaterial;
 
@@ -143,7 +144,7 @@ public class Ship : MonoBehaviour {
                 Fire(false);
             }
         } else  {
-            if (Input.GetKey(LeftKey) && !Input.GetKey(RightKey))
+            if (!Input.GetKey(LeftKey) && Input.GetKey(RightKey))
             {
                 TargetDirectionAngle += InputTurnSpeed * Time.deltaTime;
                 if (TargetDirectionAngle > 180f)
@@ -151,7 +152,7 @@ public class Ship : MonoBehaviour {
                     TargetDirectionAngle -= 360f;
                 }
             }
-            if (Input.GetKey(RightKey) && !Input.GetKey(LeftKey))
+            if (!Input.GetKey(RightKey) && Input.GetKey(LeftKey))
             {
                 TargetDirectionAngle -= InputTurnSpeed * Time.deltaTime;
                 if (TargetDirectionAngle <= -180f)
@@ -161,49 +162,6 @@ public class Ship : MonoBehaviour {
             }
         }
 
-        /*
-        // Fire!
-        if (Input.GetKeyUp(LeftKey) && !Input.GetKeyUp(RightKey))
-        {
-            if (Time.time - TimeAtLastClick <= DoublePressThresholdTime)
-            {
-                Fire(true);
-                TimeAtLastClick = float.MinValue;
-            } else {
-                TimeAtLastClick = Time.time;
-            }
-        }
-
-        if (Input.GetKeyUp(RightKey) && !Input.GetKeyUp(LeftKey))
-        {
-            if (Time.time - TimeAtLastClick <= DoublePressThresholdTime)
-            {
-                Fire(false);
-                TimeAtLastClick = float.MinValue;
-            }
-            else
-            {
-                TimeAtLastClick = Time.time;
-            }
-        }
-
-        // Treat Movement Input
-        if (Input.GetKey(LeftKey) && !Input.GetKey(RightKey)) {
-            TargetDirectionAngle += InputTurnSpeed * Time.deltaTime;
-            if (TargetDirectionAngle > 180f)
-            {
-                TargetDirectionAngle -= 360f;
-            }
-        }
-        if (Input.GetKey(RightKey) && !Input.GetKey(LeftKey))
-        {
-            TargetDirectionAngle -= InputTurnSpeed * Time.deltaTime;
-            if (TargetDirectionAngle <= -180f)
-            {
-                TargetDirectionAngle += 360f;
-            }
-        }
-        */
 
 
         // Move forward

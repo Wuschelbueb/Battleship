@@ -32,7 +32,7 @@ public class MeshGenerator {
             mg.AddRectangle(outerCirclePoints[i], outerCirclePoints[i+1], innerCirclePoints[i+1], innerCirclePoints[i]);
         }
 
-        float[] Sizes = new float[] { 1f, 1f/3, 1f/2, 1f/3, 1f/2, 1f/3, 1f/2, 1f/3 };
+        float[] Sizes = new float[] { 3f/2, 1f/3, 1f/2, 1f/3, 1f/2, 1f/3, 1f/2, 1f/3 };
 
         for (int i = 0; i < Sizes.Length; i++)
         {

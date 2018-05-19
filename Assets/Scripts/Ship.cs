@@ -7,7 +7,6 @@ using System.Linq;
  * Todo:
  * - Reload times
  * - Rock 'n' Pitch
- * - Collision & Cannonball deletion & Healthbar & Sinking
  * - Smoke & destruction
  */
 
@@ -16,15 +15,11 @@ public class Ship : MonoBehaviour {
 
     [SerializeField] KeyCode LeftKey, RightKey, FireKey;
 
-    [SerializeField] float Speed = 1f;
+    [SerializeField] float Speed = 55f;
 
     [SerializeField] float ShipTurnSpeed = 50f;
 
     [SerializeField] float InputTurnSpeed = 200f;
-
-    [SerializeField] float RadiusOfGizmosCircle = 5f;
-
-    [SerializeField] float DoublePressThresholdTime = 0.5f;
 
     [SerializeField(), Range(-180f, 180f)] float TargetDirectionAngle = 0f;
 
@@ -40,7 +35,7 @@ public class Ship : MonoBehaviour {
 
     [SerializeField] Material CompassMaterial;
 
-    [SerializeField] float HitPoints = 100;
+    [SerializeField] int HitPoints = 50;
 
     private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
 
@@ -48,9 +43,13 @@ public class Ship : MonoBehaviour {
 
     private float TimeAtLastClick = float.MinValue;
 
+    private float LastFireTime = float.MinValue;
+
     private System.Random random = new System.Random();
 
     private GameObject Compass;
+
+    private bool isSinking;
 
     private Vector3 TargetDirectionVector { get
         {
@@ -85,56 +84,68 @@ public class Ship : MonoBehaviour {
 
     IEnumerator DelayedCannonBallInstantiation (float delay, Transform gunPosition, bool LeftSide) {
         yield return new WaitForSeconds(delay);
+
         GameObject cannonBall = Instantiate(CannonBall, gunPosition.position, Quaternion.identity);
-
-        cannonBall.name += "_Player1";
-
-        //Rigidbody ballsRigidbody = cannonBall.AddComponent<Rigidbody>();
-
         Vector3 fireDirection = LeftSide ? -transform.right : transform.right;
-
-        cannonBall.GetComponent<Rigidbody>().AddForce(2000 * (4 * fireDirection + 0.3f *Vector3.up), ForceMode.Force);
+        cannonBall.GetComponent<Rigidbody>().AddForce(4000 * (4 * fireDirection + 0.08f *Vector3.up), ForceMode.Force);
     }
 
     void Fire (bool LeftSide) {
 
-        List<Transform> Guns = LeftSide ? LeftGuns : RightGuns;
-        Vector3 Direction = LeftSide ? -transform.right : transform.right;
-        List<AudioSource> sounds = LeftSide ? LeftGunAudioSources : RightGunAudioSources;
+        if (Mathf.Abs(Time.time - LastFireTime) >= ReloadTime) {
+            LastFireTime = Time.time;
 
-        float[] delays = Guns.Select(g => (float)random.NextDouble() * MaxFireDelay).ToArray();
+            List<Transform> Guns = LeftSide ? LeftGuns : RightGuns;
+            Vector3 Direction = LeftSide ? -transform.right : transform.right;
+            List<AudioSource> sounds = LeftSide ? LeftGunAudioSources : RightGunAudioSources;
 
-        for (int i = 0; i < Guns.Count; i++)
-        {
-            sounds[i].PlayDelayed(delays[i]);
+            float[] delays = Guns.Select(g => (float)random.NextDouble() * MaxFireDelay).ToArray();
 
-            StartCoroutine(DelayedCannonBallInstantiation(delays[i], Guns[i], LeftSide));
+            for (int i = 0; i < Guns.Count; i++)
+            {
+                sounds[i].PlayDelayed(delays[i]);
+                StartCoroutine(DelayedCannonBallInstantiation(delays[i], Guns[i], LeftSide));
+            }
+   
         }
 
+    }
 
-
+    public void TakeDamage (int amount) {
+        HitPoints -= amount;
+        if (HitPoints < 1)
+        {
+            isSinking = true;
+        }
     }
 
     void Awake () {
         InitialiseAudioSources();
-        Compass = MeshGenerator.CreateCompass(50f, 5f, 20f, 40);
+        Compass = MeshGenerator.CreateCompass(50f, 2f, 20f, 40);
         Compass.transform.parent = transform;
         Compass.transform.position = transform.position; // testing...
         Compass.transform.position += 1.5f * Vector3.up;
         Compass.GetComponent<MeshRenderer>().material = CompassMaterial;
-
         AddTriggers();
     }
 
-	// Use this for initialization
-	void Start () {
-        MeshGenerator.MeshGenTest();
-	}
 
-    // Update is called once per frame
 
     void FixedUpdate()
     {
+
+
+        if (isSinking) {
+            this.transform.position +=  transform.forward * Speed * Time.deltaTime;
+            this.transform.position += -transform.up * 20 * Time.deltaTime;
+
+            if (transform.position.y <= -100f) {
+                GameObject.Destroy(gameObject);
+            }
+
+            return;
+        }
+
         if (Input.GetKey(FireKey))
         {
             if (Input.GetKeyDown(LeftKey)) {
@@ -162,8 +173,6 @@ public class Ship : MonoBehaviour {
             }
         }
 
-
-
         // Move forward
         this.transform.position = transform.position + transform.forward * Speed * Time.deltaTime;
 
@@ -189,44 +198,10 @@ public class Ship : MonoBehaviour {
                         );
 
         Compass.transform.forward = TargetDirectionVector;
-
-
     }
 
-
-
-    void OnDrawGizmos () {
-        const int CircleN = 40;
-
-        Gizmos.color = Color.black;
-
-        var circle = Enumerable.Range(0, CircleN + 1)
-                               .Select(i => new Vector3(Mathf.Sin(2 * Mathf.PI * i / CircleN), 0f, Mathf.Cos(2 * Mathf.PI * i / CircleN)))
-                               .Select(v => RadiusOfGizmosCircle * v)
-                               .Select(v => v + transform.position)
-                               .ToList();
-        
-
-        for (int i = 0; i < CircleN; i++)
-        {
-            Gizmos.DrawLine(circle[i], circle[i+1]);
-        }
-
-        Gizmos.DrawLine(transform.position, transform.position);
-
-        Gizmos.color = Color.red;
-
-        Gizmos.DrawLine(transform.position, 1.1f * RadiusOfGizmosCircle * TargetDirectionVector + transform.position);
-
-    }
-
-    void OnTriggerEnter (Collider collider) {
-        //Debug.Log(gameObject.name + ": Detected collision with " + collider.name);
-    }
 
     void AddTriggers () {
-
-
 
         var meshes = GameObject.FindObjectsOfType<MeshFilter>();
 

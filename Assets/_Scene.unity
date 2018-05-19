@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -549,9 +549,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Convex: 1
-  m_CookingOptions: 14
+  m_InflateMesh: 0
   m_SkinWidth: 0.0001
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &250640685
@@ -643,48 +643,6 @@ Transform:
   m_Father: {fileID: 1704160731}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &507048538
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4574209523334148, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 990419211bba14eb6a4d32314934ef72, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &597074071
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +882,7 @@ MonoBehaviour:
   LeftKey: 276
   RightKey: 275
   FireKey: 274
-  Speed: 40
+  Speed: 55
   ShipTurnSpeed: 30
   InputTurnSpeed: 200
   RadiusOfGizmosCircle: 5
@@ -951,10 +909,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e936c6be497b34ad8a330ea67a77d61c, type: 3}
   - {fileID: 8300000, guid: 0b3c01ca4d83d4fd897e3ffaa6d2a30a, type: 3}
   CannonBall: {fileID: 1084603954205810, guid: 1510223dd69e54f8085b3ec62b9068ca, type: 2}
-  MaxFireDelay: 1
-  ReloadTime: 0
+  MaxFireDelay: 0.7
+  ReloadTime: 3
   CompassMaterial: {fileID: 2100000, guid: c7034e5a2c0e548df9cf9f84d1924d1e, type: 2}
-  HitPoints: 100
+  HitPoints: 30
 --- !u!4 &1131256232
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,7 +1195,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1674553685
 GameObject:
@@ -1297,7 +1255,7 @@ MonoBehaviour:
   LeftKey: 97
   RightKey: 100
   FireKey: 115
-  Speed: 40
+  Speed: 55
   ShipTurnSpeed: 30
   InputTurnSpeed: 200
   RadiusOfGizmosCircle: 5
@@ -1324,10 +1282,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e936c6be497b34ad8a330ea67a77d61c, type: 3}
   - {fileID: 8300000, guid: 0b3c01ca4d83d4fd897e3ffaa6d2a30a, type: 3}
   CannonBall: {fileID: 1084603954205810, guid: 1510223dd69e54f8085b3ec62b9068ca, type: 2}
-  MaxFireDelay: 1
-  ReloadTime: 0
+  MaxFireDelay: 0.7
+  ReloadTime: 3
   CompassMaterial: {fileID: 2100000, guid: c7034e5a2c0e548df9cf9f84d1924d1e, type: 2}
-  HitPoints: 100
+  HitPoints: 30
 --- !u!4 &1704160731
 Transform:
   m_ObjectHideFlags: 0
@@ -1352,7 +1310,7 @@ Transform:
   - {fileID: 1485627281}
   - {fileID: 86095068}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1865261386
 GameObject:
@@ -1655,7 +1613,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10

@@ -6,19 +6,6 @@ public class CannonBall : MonoBehaviour {
 
     [SerializeField] GameObject GunWaterImpactParticleSystem;
 
-    public GameObject ShipThatFiredThisOne;
-
-	// Use this for initialization
-	void Start () {
-        //var col = gameObject.AddComponent<MeshCollider>();
-        //col.isTrigger = true;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     void OnTriggerEnter (Collider collider) {
 
         if (collider.tag != "Water")
@@ -27,9 +14,15 @@ public class CannonBall : MonoBehaviour {
             Debug.Log("Collided with " + collider.tag);
         }
 
-        if (collider.tag.Equals("Ship"))
+        if (collider.tag == "Ship")
         {
+            if (collider.transform.parent.parent.gameObject.GetComponent<Ship>() != null)
+            {
+                collider.transform.parent.parent.gameObject.GetComponent<Ship>().TakeDamage(1); 
 
+                // Self destroy
+                GameObject.Destroy(gameObject);
+            }
         }
 
 
@@ -39,7 +32,7 @@ public class CannonBall : MonoBehaviour {
                 .Instantiate(GunWaterImpactParticleSystem, transform.position, Quaternion.identity);
             GameObject.Destroy(impact, 2f);
 
-            // SelfDestroy
+            // Self destroy
             GameObject.Destroy(gameObject);
 
         }

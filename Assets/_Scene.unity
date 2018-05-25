@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -316,6 +316,22 @@ Prefab:
       propertyPath: m_TagString
       value: Ship
       objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 67c091e4504201241ab2c84410f52f9f, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 67c091e4504201241ab2c84410f52f9f, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 67c091e4504201241ab2c84410f52f9f, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 67c091e4504201241ab2c84410f52f9f, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 67c091e4504201241ab2c84410f52f9f, type: 2}
   m_IsPrefabParent: 0
@@ -549,9 +565,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 1
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.0001
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &250640685
@@ -861,8 +877,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1131256232}
   - component: {fileID: 1131256231}
+  - component: {fileID: 1131256233}
   m_Layer: 0
-  m_Name: Ship
+  m_Name: Ship_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -885,8 +902,6 @@ MonoBehaviour:
   Speed: 55
   ShipTurnSpeed: 30
   InputTurnSpeed: 200
-  RadiusOfGizmosCircle: 5
-  DoublePressThresholdTime: 0.8
   TargetDirectionAngle: 0
   LeftGuns:
   - {fileID: 1176231337}
@@ -912,7 +927,7 @@ MonoBehaviour:
   MaxFireDelay: 0.7
   ReloadTime: 3
   CompassMaterial: {fileID: 2100000, guid: c7034e5a2c0e548df9cf9f84d1924d1e, type: 2}
-  HitPoints: 30
+  HitPoints: 50
 --- !u!4 &1131256232
 Transform:
   m_ObjectHideFlags: 0
@@ -920,7 +935,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1131256230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1920702243}
@@ -939,6 +954,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1131256233
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1131256230}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1176231336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,8 +1264,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1704160731}
   - component: {fileID: 1704160730}
+  - component: {fileID: 1704160732}
   m_Layer: 0
-  m_Name: Ship (1)
+  m_Name: Ship_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1258,9 +1289,7 @@ MonoBehaviour:
   Speed: 55
   ShipTurnSpeed: 30
   InputTurnSpeed: 200
-  RadiusOfGizmosCircle: 5
-  DoublePressThresholdTime: 0.8
-  TargetDirectionAngle: 0
+  TargetDirectionAngle: 180
   LeftGuns:
   - {fileID: 104545912}
   - {fileID: 914723556}
@@ -1292,8 +1321,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1704160729}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -318, y: 0, z: 221}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 319}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1069125489}
@@ -1311,7 +1340,22 @@ Transform:
   - {fileID: 86095068}
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!54 &1704160732
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1704160729}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1865261386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1613,6 +1657,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10

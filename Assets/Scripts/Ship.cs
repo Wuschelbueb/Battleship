@@ -36,6 +36,7 @@ public class Ship : MonoBehaviour {
     [SerializeField] Material CompassMaterial;
 
     [SerializeField] int HitPoints = 50;
+    
 
     private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
 
@@ -116,6 +117,8 @@ public class Ship : MonoBehaviour {
         if (HitPoints < 1)
         {
             isSinking = true;
+            //transform.GetComponent<Rigidbody>().enabled = false;
+            Destroy(transform.GetComponent<Rigidbody>());
         }
     }
 
@@ -138,6 +141,7 @@ public class Ship : MonoBehaviour {
         if (isSinking) {
             this.transform.position +=  transform.forward * Speed * Time.deltaTime;
             this.transform.position += -transform.up * 20 * Time.deltaTime;
+
 
             if (transform.position.y <= -100f) {
                 GameObject.Destroy(gameObject);
@@ -222,5 +226,23 @@ public class Ship : MonoBehaviour {
 
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if(collider.tag == "Ship")
+        {
+            Debug.Log(gameObject.name + " collided with " + collider.transform.parent.parent.name);
+
+            GameObject other = collider.transform.parent.parent.gameObject;
+
+            Ship otherShip = other.GetComponent<Ship>();
+
+            if (this.gameObject.GetHashCode() < other.GetHashCode())
+            {
+                int min = Mathf.Min(this.HitPoints, otherShip.HitPoints);
+                this.TakeDamage(min);
+                otherShip.TakeDamage(min);
+            }
+        }
+    }
 
 }

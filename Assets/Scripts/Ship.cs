@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-/*
- * Todo:
- * - Reload times
- * - Rock 'n' Pitch
- * - Smoke & destruction
- */
-
 
 public class Ship : MonoBehaviour {
 
@@ -117,7 +110,6 @@ public class Ship : MonoBehaviour {
         if (HitPoints < 1)
         {
             isSinking = true;
-            //transform.GetComponent<Rigidbody>().enabled = false;
             Destroy(transform.GetComponent<Rigidbody>());
         }
     }

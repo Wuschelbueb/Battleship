@@ -128,7 +128,7 @@ public class Ship : MonoBehaviour {
 
     void FixedUpdate()
     {
-
+		if (GameManager.Instance.isPaused) return;
 
         if (isSinking) {
             this.transform.position +=  transform.forward * Speed * Time.deltaTime;

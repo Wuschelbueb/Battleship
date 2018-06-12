@@ -8,14 +8,16 @@ using System.Linq;
 
 public class PlayerSelectionUI : MonoBehaviour {
 
-	[SerializeField] List<Sprite> Flags;
-	[SerializeField] Button TeamButton;
-
+	[SerializeField] Button FactionButton;
 
 	[SerializeField] List<InputKeys> keysToAssign;
 	[SerializeField] List<Button> buttons;
 
-	public int TeamNumber = 0;
+	[SerializeField] Button Close;
+	[SerializeField] Text FactionText;
+	[SerializeField] InputField PlayerNameInput;
+
+	public int FactionNumber = 0;
 
 	private List<Text> texts;
 	private List<KeyCode> definedKeyCodes;
@@ -38,12 +40,20 @@ public class PlayerSelectionUI : MonoBehaviour {
 
 		setDefaultCodes(KeyCode.A, KeyCode.S, KeyCode.D);
 
-		TeamButton.image.sprite = Flags[TeamNumber];
-		TeamButton.onClick.AddListener(() =>
-		{
-			TeamNumber = (TeamNumber + 1) % Flags.Count;
-			TeamButton.image.sprite = Flags[TeamNumber];
+		FactionButton.image.sprite = Factions.Get(FactionNumber).UIFlag;
+		FactionButton.onClick.AddListener(OnFactionButtonClick);
+		FactionText.text = Factions.Get (FactionNumber).Name;
+
+		Close.onClick.AddListener (() => {
+			Menu.Instance.DestroyMe(this);
+			GameObject.Destroy(gameObject);
 		});
+	}
+
+	private void OnFactionButtonClick () {
+		FactionNumber = (FactionNumber + 1) % Factions.Count();
+		FactionButton.image.sprite = Factions.Get(FactionNumber).UIFlag;
+		FactionText.text = Factions.Get (FactionNumber).Name;
 	}
 
 	public void setDefaultCodes (params KeyCode[] codes) {
@@ -55,9 +65,7 @@ public class PlayerSelectionUI : MonoBehaviour {
     
 	private void UpdateTexts () {
 		for (int i = 0; i < buttons.Count; i++)
-		{
 			texts[i].text = "Press " + definedKeyCodes[i] + " for " + keysToAssign[i] + " (Change keybinding)";
-		}
 	}
 
 	private UnityEngine.Events.UnityAction CreateClickHandler (InputKeys key) {
@@ -65,7 +73,7 @@ public class PlayerSelectionUI : MonoBehaviour {
 		{
 			waitingForInput = true;
 			whichKey = key;
-			Debug.Log("listening for keys to assign to " + key.ToString());
+			//Debug.Log("listening for keys to assign to " + key.ToString());
 		};      
 	}
 
@@ -85,7 +93,7 @@ public class PlayerSelectionUI : MonoBehaviour {
 					if (!definedKeyCodes.Contains(key)) {
 						
 						definedKeyCodes[keysToAssign.IndexOf(whichKey)] = key;                    
-                        Debug.Log("got defintion " + key.ToString() + " for " + whichKey);
+                        //Debug.Log("got defintion " + key.ToString() + " for " + whichKey);
                         UpdateTexts();
 					}
                     

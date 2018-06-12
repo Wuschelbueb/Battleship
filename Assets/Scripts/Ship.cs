@@ -7,42 +7,24 @@ using System.Linq;
 public class Ship : MonoBehaviour {
 
     [SerializeField] KeyCode LeftKey, RightKey, FireKey;
-
     [SerializeField] float Speed = 55f;
-
     [SerializeField] float ShipTurnSpeed = 50f;
-
     [SerializeField] float InputTurnSpeed = 200f;
-
     [SerializeField(), Range(-180f, 180f)] float TargetDirectionAngle = 0f;
-
     [SerializeField] List<Transform> LeftGuns, RightGuns;
-
     [SerializeField] List<AudioClip> GunSounds;
-
     [SerializeField] GameObject CannonBall;
-
-    [SerializeField] float MaxFireDelay;
-
+	[SerializeField] float MaxFireDelay;
     [SerializeField] float ReloadTime;
-
     [SerializeField] Material CompassMaterial;
-
     [SerializeField] int HitPoints = 50;
-    
 
     private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
-
     private float CurrentDirectionAngle, DeltaAngle;
-
     private float TimeAtLastClick = float.MinValue;
-
     private float LastFireTime = float.MinValue;
-
     private System.Random random = new System.Random();
-
     private GameObject Compass;
-
     private bool isSinking;
 
     private Vector3 TargetDirectionVector { get

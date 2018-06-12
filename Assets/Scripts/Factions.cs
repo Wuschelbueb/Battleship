@@ -6,6 +6,7 @@ using System;
 [Serializable] public struct Faction {
 	public string Name;
 	public Sprite UIFlag;
+	public Color color;
 }
 
 /// <summary>

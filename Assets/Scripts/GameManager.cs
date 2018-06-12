@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum InputKeys
+{
+	Left, Right, Fire
+}
+
+
 public class GameManager : MonoBehaviour {
 
 	public static GameManager Instance;
 
 	[SerializeField] GameObject MediumShip;
+
+	public List<Ship> Ships = new List<Ship> ();
 
 	private bool _isPaused;
 	public bool isPaused { 
@@ -25,6 +33,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	bool isInMenu = true;
+
+	public void AddUpdateShip (PlayerSelectionUI config) {
+
+	}
 
 
 	void Awake () {

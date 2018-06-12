@@ -471,12 +471,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 534f7512f85874dc9b2b1d640974c940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BorderBetweenPlayerUIs: 50
+  SpaceReservedOnTop: 100
   PlayerUIPrefab: {fileID: 1921946626908720, guid: 8ac4be23744d9454ab764331ff5aa576,
     type: 2}
   AddPlayerButton: {fileID: 1397984900}
-  StartGame: {fileID: 0}
-  EndGame: {fileID: 0}
-  playerScripts: []
+  StartGameButton: {fileID: 2125925365}
+  EndGameButton: {fileID: 1710329290}
+  playerUIList: []
 --- !u!1 &86095067
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &244973185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +724,6 @@ GameObject:
   - component: {fileID: 250640685}
   - component: {fileID: 250640684}
   - component: {fileID: 250640683}
-  - component: {fileID: 250640687}
   m_Layer: 0
   m_Name: Ocean
   m_TagString: Water
@@ -798,19 +799,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &250640687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 250640682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84a53569c7b3548e5bbdfc9be68e8067, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GunWaterImpactParticleSystem: {fileID: 1882828477314182, guid: 990419211bba14eb6a4d32314934ef72,
-    type: 2}
 --- !u!1 &413338209
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,6 +855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MediumShip: {fileID: 1131256230}
+  Ships: []
 --- !u!4 &456531648
 Transform:
   m_ObjectHideFlags: 0
@@ -951,16 +940,22 @@ MonoBehaviour:
   factions:
   - Name: England
     UIFlag: {fileID: 21300000, guid: a6de0edbd242a43e5bae4ec4287a2e24, type: 3}
+    color: {r: 0.8897059, g: 0.07196152, b: 0.07196152, a: 0}
   - Name: France
     UIFlag: {fileID: 21300000, guid: af912781eca2f4b10adee7c3ee90622b, type: 3}
+    color: {r: 0.120708205, g: 0.06482484, b: 0.8014706, a: 0}
   - Name: Pirates
     UIFlag: {fileID: 21300000, guid: fbdf1873b784546b78b52398ca92a343, type: 3}
+    color: {r: 0, g: 0, b: 0, a: 0}
   - Name: Portugal
     UIFlag: {fileID: 21300000, guid: aa1fe17d8eef6470a8210fc7a75d6a3f, type: 3}
+    color: {r: 0.09047029, g: 0.3897059, b: 0.06590614, a: 0}
   - Name: Spain
     UIFlag: {fileID: 21300000, guid: b8c060c090ccc402e9a932d685e0e982, type: 3}
+    color: {r: 0.88235295, g: 0.8599809, b: 0.071366794, a: 0}
   - Name: United East India Company
     UIFlag: {fileID: 21300000, guid: 6444b3dea9abc4c3ab6c3fb9ba47eab2, type: 3}
+    color: {r: 0.88235295, g: 0.5252953, b: 0.14273354, a: 0}
 --- !u!1 &597074071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1497,22 +1492,22 @@ Prefab:
     - target: {fileID: 224675947322182826, guid: 8ac4be23744d9454ab764331ff5aa576,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -225
+      value: -49.5
       objectReference: {fileID: 0}
     - target: {fileID: 224675947322182826, guid: 8ac4be23744d9454ab764331ff5aa576,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 224675947322182826, guid: 8ac4be23744d9454ab764331ff5aa576,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: -650
+      value: -301
       objectReference: {fileID: 0}
     - target: {fileID: 224675947322182826, guid: 8ac4be23744d9454ab764331ff5aa576,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -400
+      value: -300
       objectReference: {fileID: 0}
     - target: {fileID: 224675947322182826, guid: 8ac4be23744d9454ab764331ff5aa576,
         type: 2}
@@ -1711,7 +1706,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5, y: 254}
+  m_AnchoredPosition: {x: -5, y: 288}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1397984900
@@ -2130,7 +2125,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -175, y: 254}
+  m_AnchoredPosition: {x: -175, y: 286}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710329290
@@ -2615,7 +2610,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 166, y: 254}
+  m_AnchoredPosition: {x: 166, y: 286}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2125925365

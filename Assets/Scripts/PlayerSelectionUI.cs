@@ -19,13 +19,20 @@ public class PlayerSelectionUI : MonoBehaviour {
 
 	public int FactionNumber = 0;
 
+	public RectTransform rectTransform { get { return GetComponentInChildren<RectTransform>(); } }
+
 	private List<Text> texts;
 	private List<KeyCode> definedKeyCodes;
 	private bool waitingForInput = false;
 	private InputKeys whichKey;
 
-	void Awake()
+
+
+	void Start()
 	{
+		// I use the Start() here as opposed to Awake() as this depends on other Objects (Factions)
+		//   having completed the Awake() function.
+
 		Debug.Assert(keysToAssign.Count == buttons.Count);
 
 		texts = new List<Text>();
@@ -75,11 +82,6 @@ public class PlayerSelectionUI : MonoBehaviour {
 			whichKey = key;
 			//Debug.Log("listening for keys to assign to " + key.ToString());
 		};      
-	}
-
-	// Use this for initialization
-	void Start () {
-		
 	}
 
 	// Update is called once per frame

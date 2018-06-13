@@ -56,6 +56,4 @@ public class TextureData : UpdatableData {
 		public float blendStrength;
 		public float textureScale;
 	}
-		
-	 
 }

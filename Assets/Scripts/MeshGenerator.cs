@@ -4,7 +4,11 @@ using System.Linq;
 using UnityEngine;
 
 public class MeshGenerator {
-
+    public const int numSupportedLODs = 5;
+    public const int numSupportedChunkSizes = 9;
+    public const int numSupportedFlatshadedChunkSizes = 3;
+    public static readonly int[] supportedChunkSizes = { 48, 72, 96, 120, 144, 168, 192, 216, 240 };
+    public static readonly int[] supportedFlatshadedChunkSizes = { 48, 72, 96};
   
     public static GameObject CreateCompass (float Radius = 5f, float Thickness = 0.5f, float ArrowSize = 2f, int NCirclePoints = 40) {
         

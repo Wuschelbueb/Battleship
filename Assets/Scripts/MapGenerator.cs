@@ -15,8 +15,13 @@ public class MapGenerator : MonoBehaviour {
 
 	public Material terrainMaterial;
 
-	[Range(0,6)]
-	public int editorPreviewLOD;
+    [Range(0,MeshGenerator.numSupportedChunkSizes-1)]
+    public int chunkSizeIndex;
+    [Range(0,MeshGenerator.numSupportedFlatshadedChunkSizes-1)]
+    public int flatshadedChunkSizeIndex;
+
+    [Range(0, MeshGenerator.numSupportedLODs - 1)]
+    public int editorPreviewLOD;
 
 	public bool autoUpdate;
 
@@ -38,17 +43,22 @@ public class MapGenerator : MonoBehaviour {
 
 	public int mapChunkSize {
 		get {
-
-
 			if (terrainData.useFlatShading) {
-				return 95;
+				return MeshGenerator.supportedFlatshadedChunkSizes[flatshadedChunkSizeIndex]-1;
 			} else {
-				return 239;
+                return MeshGenerator.supportedChunkSizes[chunkSizeIndex]-1;
 			}
 		}
 	}
 
-	public void DrawMapInEditor() {
+    private void Awake()
+    {
+        textureData.ApplyToMaterial(terrainMaterial);
+        textureData.UpdateMeshHeights(terrainMaterial, terrainData.minHeight, terrainData.maxHeight);
+
+    }
+
+    public void DrawMapInEditor() {
 
         textureData.UpdateMeshHeights(terrainMaterial, terrainData.minHeight, terrainData.maxHeight);
 
@@ -170,7 +180,6 @@ public class MapGenerator : MonoBehaviour {
 
 public struct MapData {
 	public readonly float[,] heightMap;
-
 
 	public MapData (float[,] heightMap)
 	{

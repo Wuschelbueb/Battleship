@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0649 
+// Disable warnings that stuff is not beeing assigned 
+// even though they are assigned throu the editor
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -18,16 +21,38 @@ public class Ship : MonoBehaviour {
     [SerializeField] Material CompassMaterial;
     [SerializeField] int HitPoints = 40;
 
-	public int factionNumber;
-	public KeyCode LeftKey, RightKey, FireKey;
+	public PlayerData playerData;
+
+	//public int factionNumber;
+	//public KeyCode LeftKey, RightKey, FireKey;
+	public bool isSinking;
+	//public string playerName;
 
     private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
     private float CurrentDirectionAngle, DeltaAngle;
-    private float TimeAtLastClick = float.MinValue;
     private float LastFireTime = float.MinValue;
     private System.Random random = new System.Random();
     private GameObject Compass;
-    private bool isSinking;
+
+	public void Initialise (PlayerData playerData) {
+		this.playerData = playerData;
+
+		playerData.OnFactionChange += OnFactionChange;
+
+		playerData.OnDelete += Destory;
+
+	}
+		
+	void OnFactionChange () {
+		SetCompassColor (Factions.List [playerData.FactionCode].color);
+	}
+
+	public void Destory () {
+		playerData.Ship = null;
+		playerData.OnDelete -= Destory;
+		playerData.OnFactionChange -= OnFactionChange;
+		GameObject.Destroy (gameObject);
+	}
 
     private Vector3 TargetDirectionVector { get
         {
@@ -44,14 +69,14 @@ public class Ship : MonoBehaviour {
 		{
 			isSinking = true;
 			Destroy(transform.GetComponent<Rigidbody>());
+			GameManager.Instance.CheckForWinner ();
 		}
 	}
 
 	public void SetCompassColor (Color color) {
 		Compass.GetComponentInChildren<MeshRenderer> ().material.color = color;
 	}
-
-
+		
     private void InitialiseAudioSources () {
         LeftGunAudioSources = new List<AudioSource>();
         RightGunAudioSources = new List<AudioSource>();
@@ -72,8 +97,7 @@ public class Ship : MonoBehaviour {
             RightGunAudioSources.Add(source);
         }
     }
-
-
+		
     private IEnumerator DelayedCannonBallInstantiation (float delay, Transform gunPosition, bool LeftSide) {
         yield return new WaitForSeconds(delay);
 
@@ -102,9 +126,7 @@ public class Ship : MonoBehaviour {
         }
 
     }
-
-    
-
+		
     void Awake () {
         InitialiseAudioSources();
         Compass = MeshGenerator.CreateCompass(50f, 2f, 20f, 40);
@@ -114,9 +136,7 @@ public class Ship : MonoBehaviour {
         Compass.GetComponent<MeshRenderer>().material = CompassMaterial;
         AddTriggers();
     }
-
-
-
+		
     void FixedUpdate()
     {
 		if (GameManager.Instance.isPaused) return;
@@ -133,16 +153,16 @@ public class Ship : MonoBehaviour {
             return;
         }
 
-        if (Input.GetKey(FireKey))
+		if (Input.GetKey(playerData.FireKey))
         {
-            if (Input.GetKeyDown(LeftKey)) {
+			if (Input.GetKeyDown(playerData.LeftKey)) {
                 Fire(true);
             }
-            if (Input.GetKeyDown(RightKey)) {
+			if (Input.GetKeyDown(playerData.RightKey)) {
                 Fire(false);
             }
         } else  {
-            if (!Input.GetKey(LeftKey) && Input.GetKey(RightKey))
+			if (!Input.GetKey(playerData.LeftKey) && Input.GetKey(playerData.RightKey))
             {
                 TargetDirectionAngle += InputTurnSpeed * Time.deltaTime;
                 if (TargetDirectionAngle > 180f)
@@ -150,7 +170,7 @@ public class Ship : MonoBehaviour {
                     TargetDirectionAngle -= 360f;
                 }
             }
-            if (!Input.GetKey(RightKey) && Input.GetKey(LeftKey))
+			if (!Input.GetKey(playerData.RightKey) && Input.GetKey(playerData.LeftKey))
             {
                 TargetDirectionAngle -= InputTurnSpeed * Time.deltaTime;
                 if (TargetDirectionAngle <= -180f)

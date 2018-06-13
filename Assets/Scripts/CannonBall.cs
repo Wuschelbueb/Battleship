@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0649 
+// Disable warnings that stuff is not beeing assigned 
+// even though they are assigned throu the editor
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0649 
+// Disable warnings that stuff is not beeing assigned 
+// even though they are assigned throu the editor
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,19 +27,36 @@ public class Menu : MonoBehaviour {
 
 	public static Menu Instance;
 
-	public List<PlayerMenu> playerUIList;
+	public List<PlayerMenu> playerMenuList;
 
-	public void DestroyMe (PlayerMenu playerUi) {
-		Debug.Assert(playerUIList.Contains(playerUi));
-		int index = playerUIList.IndexOf (playerUi);
-		playerUIList.RemoveAt (index);
-		for (int i = index; i < playerUIList.Count; i++) {
-			PositionPlayerMenu (i);
+	public void Show() {
+		playerMenuList = new List<PlayerMenu>();
+		gameObject.SetActive (true);
+		foreach (var player in GameManager.Instance.playerDataList) {
+			GameManager.Instance.CreateShipForPlayer (player);
+			AddPlayerMenu (player);
 		}
-		GameManager.Instance.RemoveShip (index);
 	}
 
+	public void AddPlayerMenu (PlayerData data) {
+		Debug.Assert (data != null);
+		PlayerMenu menu = Instantiate (PlayerUIPrefab, transform).GetComponentInChildren<PlayerMenu> ();
+		playerMenuList.Add (menu);
+		menu.Initialise (data);
+		PositionPlayerMenu (playerMenuList.IndexOf (menu));
+		data.OnFactionChange ();
+	}
 
+	public void DestroyMe (PlayerMenu playerMenu) {
+		Debug.Assert(playerMenuList.Contains(playerMenu));
+
+		int index = playerMenuList.IndexOf (playerMenu);
+		playerMenuList.RemoveAt (index);
+		for (int i = index; i < playerMenuList.Count; i++) {
+			PositionPlayerMenu (i);
+		}
+	}
+		
 	void PositionPlayerMenu (int indexInList) {
 		// The game should allow a maximum of six players. Hence their PlayerMenus are
 		//   positioned in a (3 cols x 2 rows) grid.
@@ -46,7 +66,8 @@ public class Menu : MonoBehaviour {
 		int playerMenuWidth = (Screen.width - 4 * BorderBetweenPlayerUIs) / 3; 
 		int playerMenuHeight = (Screen.height - 3 * BorderBetweenPlayerUIs) / 2 - SpaceReservedOnTop;
 
-		RectTransform playerMenuRect = playerUIList [indexInList].rectTransform;
+		//PlayerMenu playerMenu = playerMenuList.First (); // playerMenuList [indexInList];
+		RectTransform playerMenuRect = playerMenuList[indexInList].rectTransform; 
 
 		playerMenuRect.position = new Vector3 (
 			x * (playerMenuWidth + BorderBetweenPlayerUIs) + (playerMenuWidth / 2) + BorderBetweenPlayerUIs,
@@ -56,34 +77,27 @@ public class Menu : MonoBehaviour {
 		playerMenuRect.sizeDelta = new Vector2 (playerMenuWidth, playerMenuHeight);
 
 	}
-
-
+		
+	void AddPlayer() {
+		if (playerMenuList.Count >= 6) return;
+		PlayerData data = GameManager.Instance.CreatePlayer ();
+		AddPlayerMenu (data);
+	}
 
 	void Awake () {
 		Debug.Assert (Instance == null);
 		Instance = this;
-
-		AddPlayerButton.onClick.AddListener (() => {
-			// TODO, make those separate funcs.
-			if (playerUIList.Count <= 6) {
-				GameObject newObj = GameObject.Instantiate(PlayerUIPrefab, transform);
-				playerUIList.Add(newObj.GetComponentInChildren<PlayerMenu>());
-
-				int newIndex = playerUIList.Count - 1;
-				PositionPlayerMenu(newIndex);
-				GameManager.Instance.AddShip(newIndex);
-				//Menu.Instance.playerUIList[newIndex].OnFactionButtonClick();
-			}
-		});
-
-		EndGameButton.onClick.AddListener (() => {
-			Application.Quit ();
-		});
-
-		StartGameButton.onClick.AddListener (() => {
-			GameManager.Instance.isPaused = false;
-			gameObject.SetActive(false);
-		});
-
+		AddPlayerButton.onClick.AddListener (AddPlayer);
+		EndGameButton.onClick.AddListener (() => { Application.Quit (); });
+		StartGameButton.onClick.AddListener (Close);
 	}
+
+	void Close () {
+		foreach (var menu in playerMenuList) {
+			//menu.Destroy ();
+		}
+		GameManager.Instance.isPaused = false;
+		gameObject.SetActive (false);
+	}
+
 }

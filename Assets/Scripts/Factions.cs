@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0649 
+// Disable warnings that stuff is not beeing assigned 
+// even though they are assigned throu the editor
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[Serializable] public struct Faction {
+[Serializable] 
+public class Faction {
 	public string Name;
 	public Sprite UIFlag;
 	public Color color;
@@ -16,10 +20,7 @@ public class Factions : MonoBehaviour {
 
 	[SerializeField] List<Faction> factions;
 
-	private static List<Faction> _factions;
-	private void Awake () { _factions = factions; }
+	public static List<Faction> List;
 
-	public static int Count () { return _factions.Count; }
-
-	public static Faction Get (int index) { return _factions[index]; }
+	private void Awake () { List = factions; }
 }

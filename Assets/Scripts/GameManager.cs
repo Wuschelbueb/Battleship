@@ -1,13 +1,11 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0649 
+// Disable warnings that stuff is not beeing assigned 
+// even though they are assigned throu the editor
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
-
-public enum InputKeys
-{
-	Left, Right, Fire
-}
 
 
 public class GameManager : MonoBehaviour {
@@ -23,7 +21,10 @@ public class GameManager : MonoBehaviour {
 
 
 	public static GameManager Instance;
-	public List<Ship> Ships = new List<Ship> ();
+
+	public List<PlayerData> playerDataList = new List<PlayerData>();
+
+	public IEnumerable<Ship> Ships { get { return playerDataList.Select (d => d.Ship); } }
 
 	private bool _isPaused;
 	public bool isPaused { 
@@ -35,75 +36,124 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private float spawnRadius;
-	bool isInMenu = true;
-
 	/* ----- METHODS ----- */
 
 	/* Public */ 
 
+	public PlayerData CreatePlayer () {
+		PlayerData data = new PlayerData ();
+
+		GameObject ShipGameObj = Instantiate (MediumShip);
+		data.Ship = ShipGameObj.GetComponentInChildren<Ship> ();
+
+		data.Ship.Initialise (data);
+
+		playerDataList.Add (data);
+
+		data.OnFactionChange += RepositionShips;
+		data.OnDelete += RepositionShips;
+		return data;
+	}
+
+	public void DeletePlayer () {
+
+	}
+
+	public void CreateShipForPlayer (PlayerData player) {
+		if (player.Ship != null) {
+			player.Ship.Destory ();
+		}
+		GameObject ShipGameObj = Instantiate (MediumShip);
+		player.Ship = ShipGameObj.GetComponentInChildren<Ship> ();
+		player.Ship.Initialise (player);
+	}
+
+	public void CheckForWinner () {
+		int[] shipsPerFaction = new int[Factions.List.Count()];
+
+		foreach (var ship in Ships) {
+			if (!ship.isSinking) {
+				shipsPerFaction [ship.playerData.FactionCode]++;
+			}
+		}
+
+		// one or less Teams left!
+		int teamsLeft = shipsPerFaction.Count (i => i != 0);
+		if (teamsLeft <= 1) {
+			if (teamsLeft < 1) {
+				Debug.Log ("Draw!!");
+			} else {
+				
+				int winningFaction = 0;
+				for (int i = 0; i < Factions.List.Count (); i++) {
+					if (shipsPerFaction [i] > 0) {
+						winningFaction = i;
+						break;
+					}
+				}
+
+				string[] winners = Ships.Where (s => s.playerData.FactionCode == winningFaction).Select (s => s.playerData.Name).ToArray();
+
+				EndScreen.Instance.Show (winningFaction, winners);
+
+				isPaused = true;
+			}
+		}
+
+	}
+	/*
 	public void AddShip (int playerIndex) {
 		GameObject newObj = GameObject.Instantiate (MediumShip);
-		newObj.name = Menu.Instance.playerUIList [playerIndex].playerName;
+		newObj.name = Menu.Instance.playerMenuList [playerIndex].playerName;
 		if (newObj.name == "") newObj.name = "Player_" + playerIndex;
 
 		Ship ship = newObj.GetComponentInChildren<Ship> ();
-		ship.factionNumber = Menu.Instance.playerUIList [playerIndex].FactionNumber;
+		ship.factionNumber = Menu.Instance.playerMenuList [playerIndex].FactionNumber;
 		Ships.Add (ship);
 
-		UpdateAllShips ();
+		ship.SetCompassColor (Factions.Get (ship.factionNumber).color);
+
+		RepositionShips ();
 	}
+	*/
+		
+	public void RepositionShips () {
+		Vector3[] locations = getSpawnLocations ();
+		Debug.Assert (locations.Length == Ships.Count());
 
 
-
-	public void UpdateAllShips () {
-		for (int i = 0; i < Ships.Count; i++) {
-			UpdateShip (i);
+		for (int i = 0; i < playerDataList.Count; i++) {
+			playerDataList[i].Ship.gameObject.transform.position = locations [i];
 		}
 	}
-
-	// TODO, we never update a single ship, so i makes sense to merge this function into the above.
-	public void UpdateShip (int playerIndex) {
-		Vector3[] locations = getSpawnLocations ();
-
-		Debug.Assert (locations.Length == Ships.Count);
-
-		Ships [playerIndex].gameObject.transform.position = locations [playerIndex];
-
-	}
-
-	public void RemoveShip (int playerIndex) {
-		GameObject obj = Ships [playerIndex].gameObject;
-		Ships.RemoveAt (playerIndex);
-		GameObject.Destroy (obj);
-	}
-		
-	/* Private */
 
 	private Vector3[] getSpawnLocations () {
-		// TODO: this function gives garbage so far.
 
-		int[] shipsPerFaction = new int[Factions.Count()];
-		foreach (var ship in Ships) shipsPerFaction [ship.factionNumber]++;
+		int[] shipsPerFaction = new int[Factions.List.Count];
+
+		foreach (var ship in Ships) shipsPerFaction [ship.playerData.FactionCode]++;
 
 		int[] shipsPerExistingFaction = shipsPerFaction.Where (i => i != 0).ToArray ();
-		int n = shipsPerExistingFaction.Count();
 
-		Vector3[] locs = new Vector3[n];
+		int noExistingFactions = shipsPerExistingFaction.Count();
 
-		for (int i = 0; i < n; i++) {
-			locs [i] = centerOfMap.position + spawnRadius * new Vector3 (Mathf.Cos (i * 360 / n), 0f, Mathf.Sin (i * 360 / n));
+		Vector3[] locations = new Vector3[noExistingFactions];
+
+		for (int i = 0; i < noExistingFactions; i++) {
+			locations [i] = centerOfMap.position + spawnRadius * new Vector3 (Mathf.Cos (i * 2 * Mathf.PI / noExistingFactions), 0f, Mathf.Sin (i * 2 * Mathf.PI / noExistingFactions));
 		}
 
-		List<Vector3> locsWithMultiplicities = new List<Vector3> ();
+		bool[] factionsInGame = Factions.List.Select ((f, i) => shipsPerFaction [i] > 0).ToArray();
 
-		for (int i = 0; i < n; i++) {
-			locsWithMultiplicities.AddRange (Enumerable.Repeat (locs [i], shipsPerExistingFaction [i]));
+		Vector3[] playerPositions = new Vector3[Ships.Count()];
+
+		for (int i = 0; i < Ships.Count(); i++) {
+			playerPositions[i] = locations [factionsInGame.Take (playerDataList[i].FactionCode).Where (b => b).Count()];
 		}
-
-		return locsWithMultiplicities.ToArray();
+			
+		return playerPositions;
 	}
 		
-
 	void Awake () {
 		Debug.Assert (Instance == null);
 		Instance = this;
@@ -111,11 +161,10 @@ public class GameManager : MonoBehaviour {
 		spawnRadius = Vector3.Distance (pointOnSpawnCircle.position, centerOfMap.position);
 	}
 
-	// Use this for initialization
-	void Start () {
-		
+	void Start() {
+		Menu.Instance.Show ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyUp (KeyCode.Escape)) {

@@ -13,33 +13,50 @@ public class PlayerData {
 	/* Serializable stuff */
 	public int FactionCode;
 	public string Name;
-	public KeyCode FireKey;
-	public KeyCode LeftKey;
-	public KeyCode RightKey;
+	public KeyCode FireKey, LeftKey, RightKey;
 
+	public int ShotsFired, DamageDealt;
+
+	/* References */
 	public Ship Ship;
+	public PlayerMenu PlayerMenu;
 
-	/* rest */
-	public Action OnKeyChange;
-	public Action OnFactionChange;
-	public Action OnDelete;
 
-	public Faction getFaction () {
-		return Factions.List [FactionCode];
+	public void DeleteShip () {
+		if (Ship == null) {
+			Debug.Log ("Warning: tried to delete a ship, but it's null");
+			return;
+		}
+		GameObject.Destroy (Ship.gameObject);
+		Ship = null;
+		//GameManager.Instance.RepositionShips ();
+		// somewhat counterintuitive that this is not necessary... TODO think!
 	}
 
-	public void setFactionCode(int code) {
-		FactionCode = code;
-		if (OnFactionChange.GetInvocationList().Count() > 0) OnFactionChange.Invoke();
+	public void DeleteUI () {
+		if (PlayerMenu == null) {
+			Debug.Log ("Warning: tried to delete player-menu, but it's null");
+			return;
+		}
+		GameObject.Destroy (PlayerMenu.gameObject);
+		PlayerMenu = null;
+		Menu.Instance.RepositionAllPlayerMenus ();
 	}
 
-	public void setKeyCodes (KeyCode Fire, KeyCode Left, KeyCode Right) {
-		FireKey = Fire; LeftKey = Left; RightKey = Right;
-		if (OnKeyChange.GetInvocationList ().Count () > 0) OnKeyChange.Invoke();
+	public void DeleteAll () {
+		GameManager.Instance.PlayerList.Remove (this);
+		DeleteShip ();
+		DeleteUI ();
 	}
 
-	public void Delete() {
-		if (OnDelete.GetInvocationList ().Count () > 0)	OnDelete.Invoke ();
+	public void UpdateFaction () {
+		if (PlayerMenu != null) {
+			PlayerMenu.FactionText.text = Factions.List [FactionCode].Name;
+			PlayerMenu.FactionButton.image.sprite = Factions.List [FactionCode].UIFlag;
+		}
+		if (Ship != null) {
+			Ship.SetCompassColor (Factions.List [FactionCode].color);
+		}
+		GameManager.Instance.RepositionShips ();
 	}
-
 }

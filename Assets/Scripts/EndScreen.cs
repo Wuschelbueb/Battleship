@@ -35,17 +35,11 @@ public class EndScreen : MonoBehaviour {
 
 	void OnClose () {
 		gameObject.SetActive (false);
+		GameManager.Instance.PlayerList.ForEach (p => p.DeleteShip ());
+		/*foreach (var item in GameManager.Instance.PlayerList) {
+			item.Ship.SelfDestory (item);
+		}*/
 		Menu.Instance.Show ();
 	}
-
-
-	// Use this for initialization
-	void Start () {
 		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

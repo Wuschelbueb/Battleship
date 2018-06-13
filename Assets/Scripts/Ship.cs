@@ -12,7 +12,7 @@ public class Ship : MonoBehaviour {
     [SerializeField] float Speed = 55f;
     [SerializeField] float ShipTurnSpeed = 50f;
     [SerializeField] float InputTurnSpeed = 200f;
-    [SerializeField(), Range(-180f, 180f)] float TargetDirectionAngle = 0f;
+	[SerializeField(), Range(-180f, 180f)] public float TargetDirectionAngle = 0f;
     [SerializeField] List<Transform> LeftGuns, RightGuns;
     [SerializeField] List<AudioClip> GunSounds;
     [SerializeField] GameObject CannonBall;
@@ -22,11 +22,7 @@ public class Ship : MonoBehaviour {
     [SerializeField] int HitPoints = 40;
 
 	public PlayerData playerData;
-
-	//public int factionNumber;
-	//public KeyCode LeftKey, RightKey, FireKey;
 	public bool isSinking;
-	//public string playerName;
 
     private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
     private float CurrentDirectionAngle, DeltaAngle;
@@ -36,22 +32,10 @@ public class Ship : MonoBehaviour {
 
 	public void Initialise (PlayerData playerData) {
 		this.playerData = playerData;
-
-		playerData.OnFactionChange += OnFactionChange;
-
-		playerData.OnDelete += Destory;
-
 	}
 		
-	void OnFactionChange () {
+	void OnFactionChange (PlayerData data) {
 		SetCompassColor (Factions.List [playerData.FactionCode].color);
-	}
-
-	public void Destory () {
-		playerData.Ship = null;
-		playerData.OnDelete -= Destory;
-		playerData.OnFactionChange -= OnFactionChange;
-		GameObject.Destroy (gameObject);
 	}
 
     private Vector3 TargetDirectionVector { get
@@ -131,7 +115,7 @@ public class Ship : MonoBehaviour {
         InitialiseAudioSources();
         Compass = MeshGenerator.CreateCompass(50f, 2f, 20f, 40);
         Compass.transform.parent = transform;
-        Compass.transform.position = transform.position; // testing...
+       // Compass.transform.position = transform.position; // testing...
         Compass.transform.position += 1.5f * Vector3.up;
         Compass.GetComponent<MeshRenderer>().material = CompassMaterial;
         AddTriggers();
@@ -147,7 +131,7 @@ public class Ship : MonoBehaviour {
 
 
             if (transform.position.y <= -100f) {
-                GameObject.Destroy(gameObject);
+                //GameObject.Destroy(gameObject);
             }
 
             return;
@@ -155,28 +139,19 @@ public class Ship : MonoBehaviour {
 
 		if (Input.GetKey(playerData.FireKey))
         {
-			if (Input.GetKeyDown(playerData.LeftKey)) {
-                Fire(true);
-            }
-			if (Input.GetKeyDown(playerData.RightKey)) {
-                Fire(false);
-            }
-        } else  {
+			if (Input.GetKeyDown(playerData.LeftKey)) Fire(true);
+			if (Input.GetKeyDown(playerData.RightKey)) Fire(false);
+        } 
+		else  {
 			if (!Input.GetKey(playerData.LeftKey) && Input.GetKey(playerData.RightKey))
             {
                 TargetDirectionAngle += InputTurnSpeed * Time.deltaTime;
-                if (TargetDirectionAngle > 180f)
-                {
-                    TargetDirectionAngle -= 360f;
-                }
+                if (TargetDirectionAngle > 180f) TargetDirectionAngle -= 360f;
             }
 			if (!Input.GetKey(playerData.RightKey) && Input.GetKey(playerData.LeftKey))
             {
                 TargetDirectionAngle -= InputTurnSpeed * Time.deltaTime;
-                if (TargetDirectionAngle <= -180f)
-                {
-                    TargetDirectionAngle += 360f;
-                }
+                if (TargetDirectionAngle <= -180f) TargetDirectionAngle += 360f;
             }
         }
 
@@ -231,6 +206,9 @@ public class Ship : MonoBehaviour {
 
     private void OnTriggerEnter(Collider collider)
     {
+		if (GameManager.Instance.isPaused)
+			return;
+
         if(collider.tag == "Ship")
         {
             Debug.Log(gameObject.name + " collided with " + collider.transform.parent.parent.name);

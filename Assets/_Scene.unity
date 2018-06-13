@@ -306,7 +306,6 @@ MonoBehaviour:
   AddPlayerButton: {fileID: 1397984900}
   StartGameButton: {fileID: 2125925365}
   EndGameButton: {fileID: 1710329290}
-  playerMenuList: []
 --- !u!1 &244973184
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,13 +746,16 @@ MonoBehaviour:
   MediumShip: {fileID: 1879614447722486, guid: eb5288d0f334144989623eec823cda9a, type: 2}
   centerOfMap: {fileID: 1769973932}
   pointOnSpawnCircle: {fileID: 1836568797}
-  playerDataList:
+  PlayerList:
   - FactionCode: 0
-    Name: Sir Henry
-    FireKey: 115
-    LeftKey: 97
-    RightKey: 100
+    Name: Henry
+    FireKey: 0
+    LeftKey: 0
+    RightKey: 0
+    ShotsFired: 0
+    DamageDealt: 0
     Ship: {fileID: 0}
+    PlayerMenu: {fileID: 0}
 --- !u!4 &456531648
 Transform:
   m_ObjectHideFlags: 0
@@ -3211,6 +3213,16 @@ MonoBehaviour:
   CloseButton: {fileID: 0}
   FactionText: {fileID: 0}
   PlayerNameInput: {fileID: 0}
+  dataReference:
+    FactionCode: 0
+    Name: 
+    FireKey: 0
+    LeftKey: 0
+    RightKey: 0
+    ShotsFired: 0
+    DamageDealt: 0
+    Ship: {fileID: 0}
+    PlayerMenu: {fileID: 0}
 --- !u!114 &1954181991
 MonoBehaviour:
   m_ObjectHideFlags: 0

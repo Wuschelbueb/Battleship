@@ -27,75 +27,62 @@ public class Menu : MonoBehaviour {
 
 	public static Menu Instance;
 
-	public List<PlayerMenu> playerMenuList;
+	public IEnumerable<PlayerMenu> playerMenuList { get { return GameManager.Instance.PlayerList.Select (p => p.PlayerMenu); } }
+
 
 	public void Show() {
-		playerMenuList = new List<PlayerMenu>();
 		gameObject.SetActive (true);
-		foreach (var player in GameManager.Instance.playerDataList) {
+		foreach (var player in GameManager.Instance.PlayerList) {
 			GameManager.Instance.CreateShipForPlayer (player);
-			AddPlayerMenu (player);
+			CreateUIForPlayer(player);
 		}
 	}
 
-	public void AddPlayerMenu (PlayerData data) {
+	public void CreateUIForPlayer(PlayerData data) {
 		Debug.Assert (data != null);
+		Debug.Assert (data.PlayerMenu == null);
+
 		PlayerMenu menu = Instantiate (PlayerUIPrefab, transform).GetComponentInChildren<PlayerMenu> ();
-		playerMenuList.Add (menu);
+		data.PlayerMenu = menu;
 		menu.Initialise (data);
-		PositionPlayerMenu (playerMenuList.IndexOf (menu));
-		data.OnFactionChange ();
-	}
-
-	public void DestroyMe (PlayerMenu playerMenu) {
-		Debug.Assert(playerMenuList.Contains(playerMenu));
-
-		int index = playerMenuList.IndexOf (playerMenu);
-		playerMenuList.RemoveAt (index);
-		for (int i = index; i < playerMenuList.Count; i++) {
-			PositionPlayerMenu (i);
-		}
+		RepositionAllPlayerMenus ();
 	}
 		
-	void PositionPlayerMenu (int indexInList) {
-		// The game should allow a maximum of six players. Hence their PlayerMenus are
-		//   positioned in a (3 cols x 2 rows) grid.
-		Debug.Assert(0 <= indexInList && indexInList < 6);
-		int x = indexInList % 3; // col index
-		int y = indexInList < 3 ? 0 : 1; // row index
+	public void RepositionAllPlayerMenus () {
 		int playerMenuWidth = (Screen.width - 4 * BorderBetweenPlayerUIs) / 3; 
 		int playerMenuHeight = (Screen.height - 3 * BorderBetweenPlayerUIs) / 2 - SpaceReservedOnTop;
 
-		//PlayerMenu playerMenu = playerMenuList.First (); // playerMenuList [indexInList];
-		RectTransform playerMenuRect = playerMenuList[indexInList].rectTransform; 
+		for (int indexInList = 0; indexInList < GameManager.Instance.PlayerList.Count; indexInList++) {
+			if (GameManager.Instance.PlayerList [indexInList].PlayerMenu == null) continue;
+			// The game should allow a maximum of six players. Hence their PlayerMenus are
+			//   positioned in a (3 cols x 2 rows) grid.
+			Debug.Assert(0 <= indexInList && indexInList < 6);
+			int x = indexInList % 3; // col index
+			int y = indexInList < 3 ? 0 : 1; // row index
 
-		playerMenuRect.position = new Vector3 (
-			x * (playerMenuWidth + BorderBetweenPlayerUIs) + (playerMenuWidth / 2) + BorderBetweenPlayerUIs,
-			y * (playerMenuHeight + BorderBetweenPlayerUIs) + (playerMenuHeight / 2) + BorderBetweenPlayerUIs
-		);
+			RectTransform playerMenuRect = GameManager.Instance.PlayerList[indexInList].PlayerMenu.rectTransform; 
 
-		playerMenuRect.sizeDelta = new Vector2 (playerMenuWidth, playerMenuHeight);
+			playerMenuRect.position = new Vector3 (
+				x * (playerMenuWidth + BorderBetweenPlayerUIs) + (playerMenuWidth / 2) + BorderBetweenPlayerUIs,
+				y * (playerMenuHeight + BorderBetweenPlayerUIs) + (playerMenuHeight / 2) + BorderBetweenPlayerUIs
+			);
 
-	}
-		
-	void AddPlayer() {
-		if (playerMenuList.Count >= 6) return;
-		PlayerData data = GameManager.Instance.CreatePlayer ();
-		AddPlayerMenu (data);
+			playerMenuRect.sizeDelta = new Vector2 (playerMenuWidth, playerMenuHeight);
+		}
+
+
 	}
 
 	void Awake () {
 		Debug.Assert (Instance == null);
 		Instance = this;
-		AddPlayerButton.onClick.AddListener (AddPlayer);
+		AddPlayerButton.onClick.AddListener (() => { GameManager.Instance.CreatePlayer(); });
 		EndGameButton.onClick.AddListener (() => { Application.Quit (); });
-		StartGameButton.onClick.AddListener (Close);
+		StartGameButton.onClick.AddListener (StartGame);
 	}
 
-	void Close () {
-		foreach (var menu in playerMenuList) {
-			//menu.Destroy ();
-		}
+	void StartGame () {
+		GameManager.Instance.PlayerList.ForEach (p => p.DeleteUI());
 		GameManager.Instance.isPaused = false;
 		gameObject.SetActive (false);
 	}

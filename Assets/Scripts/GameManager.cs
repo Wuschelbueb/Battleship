@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager Instance;
 
-	public List<PlayerData> playerDataList = new List<PlayerData>();
+	public List<PlayerData> PlayerList = new List<PlayerData>();
 
-	public IEnumerable<Ship> Ships { get { return playerDataList.Select (d => d.Ship); } }
+	public int N { get { return PlayerList.Count; } }
+
+	public IEnumerable<Ship> Ships { get { return PlayerList.Select (d => d.Ship); } }
 
 	private bool _isPaused;
 	public bool isPaused { 
@@ -36,36 +38,30 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private float spawnRadius;
-	/* ----- METHODS ----- */
 
-	/* Public */ 
+	public void CreatePlayer () {
+		if (PlayerList.Count >= 6) {
+			Debug.Log ("tried to add more than 6 players. not allowed");
+			return;
+		}
 
-	public PlayerData CreatePlayer () {
 		PlayerData data = new PlayerData ();
+		PlayerList.Add (data);
 
-		GameObject ShipGameObj = Instantiate (MediumShip);
-		data.Ship = ShipGameObj.GetComponentInChildren<Ship> ();
-
-		data.Ship.Initialise (data);
-
-		playerDataList.Add (data);
-
-		data.OnFactionChange += RepositionShips;
-		data.OnDelete += RepositionShips;
-		return data;
+		CreateShipForPlayer (data);
+		Menu.Instance.CreateUIForPlayer (data);
+		data.UpdateFaction ();
 	}
-
-	public void DeletePlayer () {
-
-	}
+		
 
 	public void CreateShipForPlayer (PlayerData player) {
 		if (player.Ship != null) {
-			player.Ship.Destory ();
+			player.DeleteShip ();
 		}
 		GameObject ShipGameObj = Instantiate (MediumShip);
 		player.Ship = ShipGameObj.GetComponentInChildren<Ship> ();
 		player.Ship.Initialise (player);
+		GameManager.Instance.RepositionShips ();
 	}
 
 	public void CheckForWinner () {
@@ -101,34 +97,9 @@ public class GameManager : MonoBehaviour {
 		}
 
 	}
-	/*
-	public void AddShip (int playerIndex) {
-		GameObject newObj = GameObject.Instantiate (MediumShip);
-		newObj.name = Menu.Instance.playerMenuList [playerIndex].playerName;
-		if (newObj.name == "") newObj.name = "Player_" + playerIndex;
-
-		Ship ship = newObj.GetComponentInChildren<Ship> ();
-		ship.factionNumber = Menu.Instance.playerMenuList [playerIndex].FactionNumber;
-		Ships.Add (ship);
-
-		ship.SetCompassColor (Factions.Get (ship.factionNumber).color);
-
-		RepositionShips ();
-	}
-	*/
 		
 	public void RepositionShips () {
-		Vector3[] locations = getSpawnLocations ();
-		Debug.Assert (locations.Length == Ships.Count());
-
-
-		for (int i = 0; i < playerDataList.Count; i++) {
-			playerDataList[i].Ship.gameObject.transform.position = locations [i];
-		}
-	}
-
-	private Vector3[] getSpawnLocations () {
-
+		// TODO this should be written almost ship-agnostic only taking players into account.
 		int[] shipsPerFaction = new int[Factions.List.Count];
 
 		foreach (var ship in Ships) shipsPerFaction [ship.playerData.FactionCode]++;
@@ -148,10 +119,24 @@ public class GameManager : MonoBehaviour {
 		Vector3[] playerPositions = new Vector3[Ships.Count()];
 
 		for (int i = 0; i < Ships.Count(); i++) {
-			playerPositions[i] = locations [factionsInGame.Take (playerDataList[i].FactionCode).Where (b => b).Count()];
+			playerPositions[i] = locations [factionsInGame.Take (PlayerList[i].FactionCode).Where (b => b).Count()];
 		}
-			
-		return playerPositions;
+
+		Debug.Assert (playerPositions.Length == Ships.Count());
+
+		for (int i = 0; i < PlayerList.Count; i++) {
+			PlayerList [i].Ship.gameObject.transform.position = playerPositions [i];
+
+			Vector3 radialDirection = centerOfMap.position- PlayerList [i].Ship.transform.position ;
+
+			Quaternion shipRotation = Quaternion.LookRotation (radialDirection);
+
+			PlayerList [i].Ship.transform.rotation = shipRotation;
+
+			PlayerList [i].Ship.TargetDirectionAngle = Vector3.SignedAngle (Vector3.forward, radialDirection, Vector3.up);
+		}
+
+
 	}
 		
 	void Awake () {
@@ -171,6 +156,4 @@ public class GameManager : MonoBehaviour {
 			isPaused = !isPaused;
 		}
 	}
-
-
 }

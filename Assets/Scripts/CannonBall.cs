@@ -10,14 +10,10 @@ public class CannonBall : MonoBehaviour {
     [SerializeField] GameObject GunWaterImpactParticleSystem;
 
     void OnTriggerEnter (Collider collider) {
-
-        if (collider.tag != "Water")
-        {
-
-            Debug.Log("Collided with " + collider.tag);
-        }
-
-        if (collider.tag == "Ship")
+		if (GameManager.Instance.isPaused)
+			return;
+		
+		if (collider.tag == "Ship")
         {
             if (collider.transform.parent.parent.gameObject.GetComponent<Ship>() != null)
             {
@@ -39,9 +35,5 @@ public class CannonBall : MonoBehaviour {
             GameObject.Destroy(gameObject);
 
         }
-
-
-
     }
-
 }

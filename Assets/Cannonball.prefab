@@ -59,7 +59,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c7034e5a2c0e548df9cf9f84d1924d1e, type: 2}
+  - {fileID: 2100000, guid: 315b856832ddf42f6811c02ebc738870, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -207,7 +207,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GunWaterImpactParticleSystem: {fileID: 1882828477314182, guid: 990419211bba14eb6a4d32314934ef72,
     type: 2}
-  ShipThatFiredThisOne: {fileID: 0}
 --- !u!135 &135111867496698814
 SphereCollider:
   m_ObjectHideFlags: 1

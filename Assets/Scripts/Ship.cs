@@ -6,7 +6,6 @@ using System.Linq;
 
 public class Ship : MonoBehaviour {
 
-    [SerializeField] KeyCode LeftKey, RightKey, FireKey;
     [SerializeField] float Speed = 55f;
     [SerializeField] float ShipTurnSpeed = 50f;
     [SerializeField] float InputTurnSpeed = 200f;
@@ -17,7 +16,10 @@ public class Ship : MonoBehaviour {
 	[SerializeField] float MaxFireDelay;
     [SerializeField] float ReloadTime;
     [SerializeField] Material CompassMaterial;
-    [SerializeField] int HitPoints = 50;
+    [SerializeField] int HitPoints = 40;
+
+	public int factionNumber;
+	public KeyCode LeftKey, RightKey, FireKey;
 
     private List<AudioSource> LeftGunAudioSources, RightGunAudioSources;
     private float CurrentDirectionAngle, DeltaAngle;
@@ -36,7 +38,21 @@ public class Ship : MonoBehaviour {
         }
     }
 
-    void InitialiseAudioSources () {
+	public void TakeDamage (int amount) {
+		HitPoints -= amount;
+		if (HitPoints < 1)
+		{
+			isSinking = true;
+			Destroy(transform.GetComponent<Rigidbody>());
+		}
+	}
+
+	public void SetCompassColor (Color color) {
+		Compass.GetComponentInChildren<MeshRenderer> ().material.color = color;
+	}
+
+
+    private void InitialiseAudioSources () {
         LeftGunAudioSources = new List<AudioSource>();
         RightGunAudioSources = new List<AudioSource>();
 
@@ -58,7 +74,7 @@ public class Ship : MonoBehaviour {
     }
 
 
-    IEnumerator DelayedCannonBallInstantiation (float delay, Transform gunPosition, bool LeftSide) {
+    private IEnumerator DelayedCannonBallInstantiation (float delay, Transform gunPosition, bool LeftSide) {
         yield return new WaitForSeconds(delay);
 
         GameObject cannonBall = Instantiate(CannonBall, gunPosition.position, Quaternion.identity);
@@ -66,7 +82,7 @@ public class Ship : MonoBehaviour {
         cannonBall.GetComponent<Rigidbody>().AddForce(4000 * (4 * fireDirection + 0.08f *Vector3.up), ForceMode.Force);
     }
 
-    void Fire (bool LeftSide) {
+    private void Fire (bool LeftSide) {
 
         if (Mathf.Abs(Time.time - LastFireTime) >= ReloadTime) {
             LastFireTime = Time.time;
@@ -87,14 +103,7 @@ public class Ship : MonoBehaviour {
 
     }
 
-    public void TakeDamage (int amount) {
-        HitPoints -= amount;
-        if (HitPoints < 1)
-        {
-            isSinking = true;
-            Destroy(transform.GetComponent<Rigidbody>());
-        }
-    }
+    
 
     void Awake () {
         InitialiseAudioSources();

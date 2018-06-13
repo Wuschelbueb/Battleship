@@ -55,9 +55,7 @@ public class MeshGenerator {
 
         mf.mesh = mg.GetMesh();
 
-
         return go;
-
     }
 
 
@@ -91,8 +89,12 @@ public class MeshGenerator {
     }
 
     public void AddRectangle (Vector3 a, Vector3 b, Vector3 c, Vector3 d){
+		// Fed up with mixing up sides, just draw all of them.
         AddTriangle(a,b,d);
         AddTriangle(b,c,d);
+
+		AddTriangle(a,d,b);
+		AddTriangle(b,d,c);
     }
 
     public Mesh GetMesh () {

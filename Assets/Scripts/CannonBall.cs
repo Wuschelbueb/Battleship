@@ -35,12 +35,5 @@ public class CannonBall : MonoBehaviour {
             GameObject.Destroy(gameObject);
 
         }
-        if (collider.tag == "Untagged")
-        {
-            GameObject.Destroy(gameObject);
-        }
-
-
-
     }
 }

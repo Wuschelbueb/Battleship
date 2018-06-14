@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] Transform centerOfMap;
 	[SerializeField] Transform pointOnSpawnCircle;
 	[SerializeField] float angleBetweenTeammembers;
-	[SerializeField] Camera mainCamera;
 
 
 	public static GameManager Instance;
@@ -30,9 +29,6 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerable<Ship> Ships { get { return PlayerList.Select (d => d.Ship); } }
 
-	private float spawnRadius;
-	private float areaOfTrapezoid = -1;
-
 	private bool _isPaused;
 	public bool isPaused { 
 		get { return _isPaused; } 
@@ -42,8 +38,7 @@ public class GameManager : MonoBehaviour {
 		} 
 	}
 
-
-
+	private float spawnRadius;
 
 	public void CreatePlayer () {
 		if (PlayerList.Count >= 6) {
@@ -105,7 +100,8 @@ public class GameManager : MonoBehaviour {
 	}
 		
 	public void RepositionShips () {
-	
+
+		// TODO this should be written almost ship-agnostic only taking players into account.
 		int[] playerPerFaction = new int[Factions.List.Count];
 
 		//foreach (var p in PlayerList) playerPerFaction [p.FactionCode]++;
@@ -162,7 +158,6 @@ public class GameManager : MonoBehaviour {
 		Instance = this;
 		isPaused = true;
 		spawnRadius = Vector3.Distance (pointOnSpawnCircle.position, centerOfMap.position);
-		//CreatePlayFieldCollider ();
 	}
 
 	void Start() {
@@ -174,120 +169,8 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.Escape)) {
 			isPaused = !isPaused;
 		}
-		if (Input.GetMouseButtonUp (0)) {
-			Ray ray = mainCamera.ScreenPointToRay(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
-			float LenghtToHitOcean = -ray.origin.y / ray.direction.y;
-			Vector3 hitpoint = ray.origin + LenghtToHitOcean * ray.direction;
-			InFieldChecker.Check (hitpoint);
-		}
 	}
 
-	#region On-Screen-Checker
-
-	/// <summary>
-	/// A nested class with the purpose of checking if a position is on-Screen.
-	///  
-	/// Based on the following idea:
-	///  let a,b,c,d be the trapezoid screen area. p be the point on screen to check, 
-	///  then Area (a,b,p) + Area(b,c,p) + ... + Area(d,a,p) <= Area(Trapezoid) iff 
-	///  p in Trapezoid.
-	/// </summary>
-	public static class InFieldChecker {
-		const float epsilon = 20f;
-		static Vector3[] corners = null;
-		static float trapezoidArea;
-
-		static void CalcCorners () {
-			corners = new Vector3[] {
-				GetHitPoint(0f, 0f),
-				GetHitPoint(Screen.width, 0f),
-				GetHitPoint(Screen.width, Screen.height),
-				GetHitPoint(0f, Screen.height)
-			};
-			trapezoidArea = TrigArea (corners [0], corners [1], corners [2]) + TrigArea (corners [0], corners [2], corners [3]);
-		}
-
-		static Vector3 GetHitPoint (float x, float y) {
-			Ray ray = GameManager.Instance.mainCamera.ScreenPointToRay (new Vector3 (x, y, 0f));
-			float LenghtToHitOcean = -ray.origin.y / ray.direction.y;
-			return ray.origin + LenghtToHitOcean * ray.direction;
-		}
-
-		static float TrigArea (Vector3 a, Vector3 b, Vector3 c) {
-			Vector3 x = b - a, y = c - a;
-			return Math.Abs(Vector3.Cross (x, y).magnitude / 2);
-		}
-			
-		static public bool Check (Vector3 position) {
-			if (corners == null) CalcCorners ();
-
-			float newArea = 
-				TrigArea (position, corners [0], corners [1])
-				+ TrigArea (position, corners [1], corners [2])
-				+ TrigArea (position, corners [2], corners [3])
-				+ TrigArea (position, corners [3], corners [0]);
-
-
-			trapezoidArea = TrigArea (corners [0], corners [1], corners [2]) + TrigArea (corners [0], corners [2], corners [3]);
-
-			Debug.Log ("TrapezoidArea = " + trapezoidArea);
-			Debug.Log ("NewArea = " + newArea);
-			Debug.Log ("Result = " + (Mathf.Abs (newArea - trapezoidArea) <= epsilon));
-			return Mathf.Abs (newArea - trapezoidArea) <= epsilon;
-		}
-	}
-
-	#endregion
-
-	// This is bullshit as shape does not register as convex...
-	GameObject CreatePlayFieldCollider () {
-
-		Func<float, float, Vector3> GetHitPoint = (x, y) => {
-			Ray ray = mainCamera.ScreenPointToRay (new Vector3 (x, y, 0f));
-			float LenghtToHitOcean = -ray.origin.y / ray.direction.y;
-			return ray.origin + LenghtToHitOcean * ray.direction;
-		};
-
-		Vector3[] corners = new Vector3[] {
-			GetHitPoint(0f, 0f),
-			GetHitPoint(Screen.width, 0f),
-			GetHitPoint(Screen.width, Screen.height),
-			GetHitPoint(0f, Screen.height)
-		};
-
-		MeshGenerator mg = new MeshGenerator ();
-
-		mg.AddRectangle (corners.Select(v => v + new Vector3(0f, 0.5f, 0f)).ToArray());
-
-		GameObject newGO = new GameObject ("PlayFieldCollider");
-		MeshFilter mf = newGO.AddComponent<MeshFilter> ();
-		//MeshRenderer mr = newGO.AddComponent<MeshRenderer> ();
-
-		mf.mesh = mg.GetMesh ();
-		newGO.tag = "PlayField";
-
-		MeshCollider mc = newGO.AddComponent<MeshCollider> ();
-
-		mc.sharedMesh = mf.mesh;
-		mc.convex = true;
-		mc.inflateMesh = true;
-		mc.isTrigger = true;
-
-		return newGO;
-	}
-
-	void getCorners () {
-		//Camera mainCamera = GetComponentInParent<Camera> ();
-		//mainCamera.ScreenToWorldPoint ();
-		if (Input.GetMouseButtonUp (0)) {
-			//Vector3 position = mainCamera.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
-			//Debug.Log (position);
-
-			Ray ray = mainCamera.ScreenPointToRay(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
-			float LenghtToHitOcean = -ray.origin.y / ray.direction.y;
-			Vector3 hitpoint = ray.origin + LenghtToHitOcean * ray.direction;
-			Debug.Log (hitpoint);
-		}
-	}
+	//Vector3[] getCorners 
 
 }

@@ -3155,7 +3155,15 @@ MonoBehaviour:
   ReloadTime: 1.5
   CompassMaterial: {fileID: 2100000, guid: 315b856832ddf42f6811c02ebc738870, type: 2}
   HitPoints: 5
-  factionNumber: 0
-  LeftKey: 276
-  RightKey: 275
-  FireKey: 274
+  MaxTimeAllowedOffscreen: 15
+  playerData:
+    FactionCode: 0
+    Name: 
+    FireKey: 0
+    LeftKey: 0
+    RightKey: 0
+    ShotsFired: 0
+    DamageDealt: 0
+    Ship: {fileID: 0}
+    PlayerMenu: {fileID: 0}
+  isSinking: 0

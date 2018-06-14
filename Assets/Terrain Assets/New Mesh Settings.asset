@@ -8,11 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3cce3b9cb6274d299978f334a2cefde, type: 3}
+  m_Script: {fileID: 11500000, guid: 829fb66fa8f784f469ecedb105c32186, type: 3}
   m_Name: New Mesh Settings
   m_EditorClassIdentifier: 
   autoUpdate: 1
   meshScale: 10
-  useFlatShading: 0
+  useFlatShading: 1
   chunkSizeIndex: 8
   flatshadedChunkSizeIndex: 0

@@ -8,20 +8,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb49c415c73a941729b11c3076268f15, type: 3}
+  m_Script: {fileID: 11500000, guid: 6955b3b2a4126411986edfbd7cebe1df, type: 3}
   m_Name: New Height Map Settings
   m_EditorClassIdentifier: 
   autoUpdate: 1
   noiseSettings:
-    normalizeMode: 1
-    scale: 40
+    normalizeMode: 0
+    scale: 73.24
     octaves: 6
-    persistance: 0.361
+    persistance: 0.28
     lacunarity: 2
     seed: 0
     offset: {x: 0, y: 0}
   useFalloff: 1
-  heightMultiplier: 50
+  heightMultiplier: 40
   heightCurve:
     serializedVersion: 2
     m_Curve:
@@ -32,22 +32,28 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.5201825
-      value: -0.0070058107
+      time: 0.40913743
+      value: 0.007150471
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.7
+      time: 0.6
       value: 0.5
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.2483438
+      outSlope: 0.2483438
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.8020901
+      value: 0.58879507
+      inSlope: 1.8063188
+      outSlope: 1.8063188
       tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

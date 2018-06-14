@@ -20,6 +20,7 @@ public class Ship : MonoBehaviour {
     [SerializeField] float ReloadTime;
     [SerializeField] Material CompassMaterial;
     [SerializeField] int HitPoints = 40;
+	[SerializeField] float MaxTimeAllowedOffscreen;
 
 	public PlayerData playerData;
 	public bool isSinking;
@@ -29,6 +30,8 @@ public class Ship : MonoBehaviour {
     private float LastFireTime = float.MinValue;
     private System.Random random = new System.Random();
     private GameObject Compass;
+	private float TimeSpentOutsideScreen = 0;
+
 
 	public void Initialise (PlayerData playerData) {
 		this.playerData = playerData;
@@ -124,6 +127,19 @@ public class Ship : MonoBehaviour {
     void FixedUpdate()
     {
 		if (GameManager.Instance.isPaused) return;
+
+		/*  Check if we are in the play field:  */
+		if (GameManager.InFieldChecker.Check (transform.position)) {
+			TimeSpentOutsideScreen = 0;
+		} else {
+			TimeSpentOutsideScreen += Time.deltaTime;
+			if (TimeSpentOutsideScreen > MaxTimeAllowedOffscreen) {
+				TakeDamage (int.MaxValue);
+			}
+		}
+
+
+
 
         if (isSinking) {
             this.transform.position +=  transform.forward * Speed * Time.deltaTime;

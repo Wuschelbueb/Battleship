@@ -747,6 +747,7 @@ MonoBehaviour:
   centerOfMap: {fileID: 1769973932}
   pointOnSpawnCircle: {fileID: 1836568797}
   angleBetweenTeammembers: 15
+  mainCamera: {fileID: 2037553656}
   PlayerList:
   - FactionCode: 0
     Name: Henry
@@ -3278,7 +3279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &1890213876
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3293,7 +3294,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128

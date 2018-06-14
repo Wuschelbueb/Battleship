@@ -91,6 +91,11 @@ public class MeshGenerator {
         Vertices.Add(b);
     }
 
+	public void AddRectangle (params Vector3[] vecs) {
+		Debug.Assert (vecs.Length == 4);
+		AddRectangle (vecs [0], vecs [1], vecs [2], vecs [3]);
+	}
+
     public void AddRectangle (Vector3 a, Vector3 b, Vector3 c, Vector3 d){
 		// Fed up with mixing up sides, just draw all of them.
         AddTriangle(a,b,d);

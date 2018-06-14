@@ -9,6 +9,7 @@ TagManager:
   - Ship
   - Hull
   - Factions
+  - PlayField
   layers:
   - Default
   - TransparentFX

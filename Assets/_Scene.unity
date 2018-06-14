@@ -301,7 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BorderBetweenPlayerUIs: 50
   SpaceReservedOnTop: 100
-  PlayerUIPrefab: {fileID: 1879438925399382, guid: dc42aca9b93bb4898b38cd7233e02eec,
+  PlayerUIPrefab: {fileID: 1633743587794122, guid: b590a71b2a4ff4a808f218330f0829ca,
     type: 2}
   AddPlayerButton: {fileID: 1397984900}
   StartGameButton: {fileID: 2125925365}
@@ -743,7 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f0c250fb90dd4b08abd87790f16d57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MediumShip: {fileID: 1879614447722486, guid: eb5288d0f334144989623eec823cda9a, type: 2}
+  MediumShip: {fileID: 1879614447722486, guid: 0c4fbd7ae6ca848b29073740530ed4a8, type: 2}
   centerOfMap: {fileID: 1769973932}
   pointOnSpawnCircle: {fileID: 1836568797}
   angleBetweenTeammembers: 15
@@ -935,7 +935,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 636534479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e1881b2490c7401fad82b2d81208eb5, type: 3}
+  m_Script: {fileID: 11500000, guid: 98d09cda3fb574327bc0cbea2296e9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   RematchButton: {fileID: 2061778476}
@@ -1320,13 +1320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e302d20d46843b780c135c1b477b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CornerPoints:
-  - {fileID: 1469040671}
-  - {fileID: 1605569386}
-  - {fileID: 1762363148}
-  - {fileID: 1673357442}
-  size: 10
-  material: {fileID: 2100000, guid: 82f04e74e835d4081af22160aae54964, type: 2}
 --- !u!1 &990950959
 GameObject:
   m_ObjectHideFlags: 0
@@ -3289,7 +3282,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c3a7a5a5d810141e2a67821f157e1447, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0ce7e146fac114e97863e40927905380, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3404,23 +3397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2441bc821ac4ab9b74fa9f67ce0b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FactionButton: {fileID: 0}
-  FireButton: {fileID: 0}
-  LeftButton: {fileID: 0}
-  RightButton: {fileID: 0}
-  CloseButton: {fileID: 0}
-  FactionText: {fileID: 0}
-  PlayerNameInput: {fileID: 0}
-  dataReference:
-    FactionCode: 0
-    Name: 
-    FireKey: 0
-    LeftKey: 0
-    RightKey: 0
-    ShotsFired: 0
-    DamageDealt: 0
-    Ship: {fileID: 0}
-    PlayerMenu: {fileID: 0}
 --- !u!114 &1954181991
 MonoBehaviour:
   m_ObjectHideFlags: 0

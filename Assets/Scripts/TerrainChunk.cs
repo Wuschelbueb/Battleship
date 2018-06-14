@@ -36,6 +36,7 @@ public class TerrainChunk
         this.meshSettings = meshSettings;
         this.viewer = viewer;
 
+
         sampleCentre = coord * meshSettings.meshWorldSize / meshSettings.meshScale;
         Vector2 position = coord * meshSettings.meshWorldSize;
         bounds = new Bounds(position, Vector2.one * meshSettings.meshWorldSize);

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 	// of equal distance. 
 	[SerializeField] Transform centerOfMap;
 	[SerializeField] Transform pointOnSpawnCircle;
+	[SerializeField] float angleBetweenTeammembers;
 
 
 	public static GameManager Instance;
@@ -99,33 +100,46 @@ public class GameManager : MonoBehaviour {
 	}
 		
 	public void RepositionShips () {
+
 		// TODO this should be written almost ship-agnostic only taking players into account.
-		int[] shipsPerFaction = new int[Factions.List.Count];
+		int[] playerPerFaction = new int[Factions.List.Count];
 
-		foreach (var ship in Ships) shipsPerFaction [ship.playerData.FactionCode]++;
+		//foreach (var p in PlayerList) playerPerFaction [p.FactionCode]++;
 
-		int[] shipsPerExistingFaction = shipsPerFaction.Where (i => i != 0).ToArray ();
+		PlayerList.ForEach (p => playerPerFaction [p.FactionCode]++);
 
-		int noExistingFactions = shipsPerExistingFaction.Count();
+		int[] playerPerExistingFaction = playerPerFaction.Where (i => i != 0).ToArray ();
 
-		Vector3[] locations = new Vector3[noExistingFactions];
+		int numberExistingFactions = playerPerExistingFaction.Count();
 
-		for (int i = 0; i < noExistingFactions; i++) {
-			locations [i] = centerOfMap.position + spawnRadius * new Vector3 (Mathf.Cos (i * 2 * Mathf.PI / noExistingFactions), 0f, Mathf.Sin (i * 2 * Mathf.PI / noExistingFactions));
+		float[] startingAngles = new float[numberExistingFactions];
+		for (int i = 0; i < numberExistingFactions; i++) {
+			startingAngles [i] = 2 * Mathf.PI * i / numberExistingFactions;
 		}
+			
+		bool[] factionsInGame = Factions.List.Select ((f, i) => playerPerFaction [i] > 0).ToArray();
 
-		bool[] factionsInGame = Factions.List.Select ((f, i) => shipsPerFaction [i] > 0).ToArray();
-
-		Vector3[] playerPositions = new Vector3[Ships.Count()];
-
-		for (int i = 0; i < Ships.Count(); i++) {
-			playerPositions[i] = locations [factionsInGame.Take (PlayerList[i].FactionCode).Where (b => b).Count()];
-		}
-
-		Debug.Assert (playerPositions.Length == Ships.Count());
+		float[] playerAngles = new float[PlayerList.Count];
 
 		for (int i = 0; i < PlayerList.Count; i++) {
+			playerAngles[i] = startingAngles [factionsInGame.Take (PlayerList[i].FactionCode).Where (b => b).Count()];
+		}
+
+		for (int i = 1; i < PlayerList.Count; i++) {
+			while (playerAngles.Take (i - 1).Count (a => Math.Abs(a - playerAngles [i]) < angleBetweenTeammembers / 2 * Mathf.Deg2Rad) > 0) {
+				playerAngles [i] += angleBetweenTeammembers * Mathf.Deg2Rad;
+			}
+		}
+
+		Vector3[] playerPositions = playerAngles.Select (a => centerOfMap.position + spawnRadius * new Vector3 (Mathf.Cos(a), 0f, Mathf.Sin (a))).ToArray ();
+
+		Debug.Assert (playerPositions.Length == PlayerList.Count);
+
+		for (int i = 0; i < PlayerList.Count; i++) {
+			if (PlayerList [i].Ship == null) continue;
+
 			PlayerList [i].Ship.gameObject.transform.position = playerPositions [i];
+			//Debug.Log ("Position player of " + PlayerList[i].FactionCode + " to " + playerPositions [i]);
 
 			Vector3 radialDirection = centerOfMap.position- PlayerList [i].Ship.transform.position ;
 

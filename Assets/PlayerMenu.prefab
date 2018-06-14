@@ -556,7 +556,7 @@ MonoBehaviour:
     ShotsFired: 0
     DamageDealt: 0
     Ship: {fileID: 0}
-    PlayerMenu: {fileID: 0}
+    PlayerMenu: {fileID: 114450660671725932}
 --- !u!114 &114456049562769768
 MonoBehaviour:
   m_ObjectHideFlags: 1

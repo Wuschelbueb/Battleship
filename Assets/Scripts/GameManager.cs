@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour {
 
 	public IEnumerable<Ship> Ships { get { return PlayerList.Select (d => d.Ship); } }
 
-	private float spawnRadius;
+	public float spawnRadius = 200;
 	private float areaOfTrapezoid = -1;
 
 	private bool _isPaused;
@@ -161,7 +161,6 @@ public class GameManager : MonoBehaviour {
 		Debug.Assert (Instance == null);
 		Instance = this;
 		isPaused = true;
-		spawnRadius = Vector3.Distance (pointOnSpawnCircle.position, centerOfMap.position);
 		//CreatePlayFieldCollider ();
 	}
 

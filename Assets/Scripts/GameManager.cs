@@ -170,4 +170,7 @@ public class GameManager : MonoBehaviour {
 			isPaused = !isPaused;
 		}
 	}
+
+	//Vector3[] getCorners 
+
 }

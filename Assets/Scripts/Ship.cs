@@ -132,6 +132,7 @@ public class Ship : MonoBehaviour {
 		if (GameManager.InFieldChecker.Check (transform.position)) {
 			TimeSpentOutsideScreen = 0;
 		} else {
+            Debug.Log("I'm out");
 			TimeSpentOutsideScreen += Time.deltaTime;
 			if (TimeSpentOutsideScreen > MaxTimeAllowedOffscreen) {
 				TakeDamage (int.MaxValue);

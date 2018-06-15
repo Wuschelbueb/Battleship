@@ -20,7 +20,7 @@ MonoBehaviour:
     lacunarity: 2.2
     offset: {x: -8.21, y: 8.03}
   useFalloff: 1
-  heightMultiplier: 116.1
+  heightMultiplier: 115.74
   heightCurve:
     serializedVersion: 2
     m_Curve:

@@ -36,9 +36,10 @@ public class EndScreen : MonoBehaviour {
 	void OnClose () {
 		gameObject.SetActive (false);
 		GameManager.Instance.PlayerList.ForEach (p => p.DeleteShip ());
-		/*foreach (var item in GameManager.Instance.PlayerList) {
+        /*foreach (var item in GameManager.Instance.PlayerList) {
 			item.Ship.SelfDestory (item);
 		}*/
+        GameManager.Instance.music.Stop();
 		Menu.Instance.Show ();
 	}
 		

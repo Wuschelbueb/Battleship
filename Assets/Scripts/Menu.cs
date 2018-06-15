@@ -84,7 +84,9 @@ public class Menu : MonoBehaviour {
 	void StartGame () {
 		GameManager.Instance.PlayerList.ForEach (p => p.DeleteUI());
 		GameManager.Instance.isPaused = false;
-		gameObject.SetActive (false);
+        GameManager.Instance.music.Play();
+        gameObject.SetActive (false);
+
 	}
 
 }

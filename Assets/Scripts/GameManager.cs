@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] float angleBetweenTeammembers;
 	[SerializeField] Camera mainCamera;
 
+    public AudioSource music;
+
 
 	public static GameManager Instance;
 

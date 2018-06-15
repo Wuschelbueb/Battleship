@@ -1,6 +1,5 @@
 fileFormatVersion: 2
 guid: 3a66b297a8d67e949aa17a1ffd0e7bd6
-timeCreated: 18446744011573954816
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -332,7 +331,193 @@ ModelImporter:
     4300126: sails
     4300128: rear_detail
     9500000: //RootNode
-  externalObjects: {}
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Object01Mat
+    second: {fileID: 2100000, guid: 3cc358231fc10404db4ce0e81479f4c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Object03Mat
+    second: {fileID: 2100000, guid: cf117ad1d4a684dad855e955ab21182f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon09Mat
+    second: {fileID: 2100000, guid: c4d6cfea367f41d4e81d300961d0c5e9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon12Mat
+    second: {fileID: 2100000, guid: a5677da84d4eb4f4fb67e7e3efc1deea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon13Mat
+    second: {fileID: 2100000, guid: c9cfeed846bf8d8439e2df934bc05f5b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon14Mat
+    second: {fileID: 2100000, guid: 97761a96d1a3c7c44811057595eca5a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon15Mat
+    second: {fileID: 2100000, guid: 0d4c14d0f7b006f4caf1cf0d5caeb101, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon16Mat
+    second: {fileID: 2100000, guid: 54dbd4a67e047354ea965ff9e421d508, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon17Mat
+    second: {fileID: 2100000, guid: dee321aedec793241bf49cccc0bb303a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon18Mat
+    second: {fileID: 2100000, guid: 86aa33c6b59046c4cb71e532755b87c3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon19Mat
+    second: {fileID: 2100000, guid: 076e2a463673e2146b94c6411e398a8b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon20Mat
+    second: {fileID: 2100000, guid: 5d7a215bf6e821242919a111c22c943a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon21Mat
+    second: {fileID: 2100000, guid: 3aa0deeb2bd8ea74f84afcd960603e67, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cannon22Mat
+    second: {fileID: 2100000, guid: 645d6dd80039a4d4d93b042a81755a9f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: color_flag01Mat
+    second: {fileID: 2100000, guid: 5cc76dd941fd8d94eafc55446cdfef0a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: color_flagMat
+    second: {fileID: 2100000, guid: 61124e18dcd64fb4aa03d85ccf772ed2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: crows_nestsMat
+    second: {fileID: 2100000, guid: 13dbfe12a4bc8394380a999a8c646149, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: deckMat
+    second: {fileID: 2100000, guid: f1c0ea0fc1b6a4a6f9d7a8a032c70303, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: detail_objectsMat
+    second: {fileID: 2100000, guid: bbe7852234c5cac498194927e1e380f4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: flagMat
+    second: {fileID: 2100000, guid: 9ca014f5a8a1f88468defff042c289a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gun_doors05Mat
+    second: {fileID: 2100000, guid: 1010194192f9b924da8a739c58151f89, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hull_bottomMat
+    second: {fileID: 2100000, guid: c07e84f12dbbceb46bc1696f99885448, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hull_trim2Mat
+    second: {fileID: 2100000, guid: ea5ef1fbc3bb6884982fd1b9b868ead9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hull_trimMat
+    second: {fileID: 2100000, guid: 0a2caeecf1479b544bb2a4dff493cd13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ladderMat
+    second: {fileID: 2100000, guid: c602133a80c5bd242bba092223bf08d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mast01Mat
+    second: {fileID: 2100000, guid: c42dd13ad03cc704ab0eb546cf1521e7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mastMat
+    second: {fileID: 2100000, guid: ef79233dc88375f4aa29cb2b5d7100d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mast_detailsMat
+    second: {fileID: 2100000, guid: a435c9b1a9eabfe4395e91eb507f1893, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: netsMat
+    second: {fileID: 2100000, guid: 62139e4c88996a44b91e5f96e8e06048, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: platform01Mat
+    second: {fileID: 2100000, guid: 71443810ccd74e54697aa020061eafbf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: platformMat
+    second: {fileID: 2100000, guid: 4105f8ee7cad7a240bc494bdf1eb302b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: railMat
+    second: {fileID: 2100000, guid: da6301006659b2d4f857b3543cd8fd8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rear_detailMat
+    second: {fileID: 2100000, guid: f38735f1c9c676c489156bd7c56d20c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: riggingMat
+    second: {fileID: 2100000, guid: 59be4e250bdd41844ae9da72f06b3960, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ropeMat
+    second: {fileID: 2100000, guid: a2d6626e602430c42944862df13eb2ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sailsMat
+    second: {fileID: 2100000, guid: 81e61d143d9933d428837d5ddd86440c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: upper_hullMat
+    second: {fileID: 2100000, guid: 15bb05161bdce734eb521139d45e9001, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -351,6 +536,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -375,6 +561,8 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

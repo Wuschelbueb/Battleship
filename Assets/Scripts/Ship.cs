@@ -240,9 +240,10 @@ public class Ship : MonoBehaviour {
                 otherShip.TakeDamage(min);
             }
         }
-        if (collider.tag == "Untagged")
+        if (collider.tag == "Terrain")
         {
             Debug.Log("Hit something");
+            this.TakeDamage(70);
         }
     }
 

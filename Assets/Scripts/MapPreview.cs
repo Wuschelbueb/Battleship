@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class MapPreview : MonoBehaviour {
 
@@ -22,9 +23,20 @@ public class MapPreview : MonoBehaviour {
     public int editorPreviewLOD;
     public bool autoUpdate;
 
+    System.Random rng = new System.Random();
+    public bool newSeed;
+    public int seed;
 
     public void DrawMapInEditor()
     {
+        if (newSeed)
+        {
+            heightMapSettings.noiseSettings.seed = rng.Next();
+        }
+        else
+        {
+            heightMapSettings.noiseSettings.seed = seed;
+        }
         textureData.ApplyToMaterial(terrainMaterial);
         textureData.UpdateMeshHeights(terrainMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
         HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero);

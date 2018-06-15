@@ -13,48 +13,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   noiseSettings:
-    normalizeMode: 0
-    scale: 50
+    normalizeMode: 1
+    scale: 55
     octaves: 6
-    persistance: 0.6
-    lacunarity: 2
-    seed: 12
-    offset: {x: 0, y: 0}
+    persistance: 0.473
+    lacunarity: 2.2
+    offset: {x: -8.21, y: 8.03}
   useFalloff: 1
-  heightMultiplier: 50
+  heightMultiplier: 116.1
   heightCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.6
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.35621244
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.6985324
-      value: 0.5036508
-      inSlope: 1.2350465
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49903226
+      value: 0.008479685
+      inSlope: 0
       outSlope: 0
-      tangentMode: 1
-    - serializedVersion: 2
-      time: 0.861245
-      value: 0.69841075
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6724793
+      value: 0.35879517
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.76709324
+      value: 0.5495544
       inSlope: 0.0008822686
       outSlope: 0.0008822686
       tangentMode: 0
-    - serializedVersion: 2
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0

@@ -243,6 +243,7 @@ public class Ship : MonoBehaviour {
         if (collider.tag == "Untagged")
         {
             Debug.Log("Hit something");
+            this.TakeDamage(70);
         }
     }
 

@@ -79,16 +79,18 @@ public static class Noise {
 
 [System.Serializable]
 public class NoiseSettings {
-	public Noise.NormalizeMode normalizeMode;
+    public Noise.NormalizeMode normalizeMode;
 
-	public float scale = 50;
+    public float scale = 50;
 
-	public int octaves = 6;
-	[Range(0,1)]
-	public float persistance =.6f;
-	public float lacunarity = 2;
+    public int octaves = 6;
+    [Range(0, 1)]
+    public float persistance = .6f;
+    public float lacunarity = 2;
 
-	public int seed;
+    public int seed{
+        get;set;
+    }
 	public Vector2 offset;
 
 	public void ValidateValues() {

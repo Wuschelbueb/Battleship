@@ -36,6 +36,9 @@ public class TerrainChunk
         this.meshSettings = meshSettings;
         this.viewer = viewer;
 
+        GameObject test = new GameObject();
+        test.tag = "Terrain";
+
 
         sampleCentre = coord * meshSettings.meshWorldSize / meshSettings.meshScale;
         Vector2 position = coord * meshSettings.meshWorldSize;

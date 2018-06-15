@@ -229,9 +229,9 @@ public class GameManager : MonoBehaviour {
 
 			trapezoidArea = TrigArea (corners [0], corners [1], corners [2]) + TrigArea (corners [0], corners [2], corners [3]);
 
-			Debug.Log ("TrapezoidArea = " + trapezoidArea);
-			Debug.Log ("NewArea = " + newArea);
-			Debug.Log ("Result = " + (Mathf.Abs (newArea - trapezoidArea) <= epsilon));
+			//Debug.Log ("TrapezoidArea = " + trapezoidArea);
+			//Debug.Log ("NewArea = " + newArea);
+			//Debug.Log ("Result = " + (Mathf.Abs (newArea - trapezoidArea) <= epsilon));
 			return Mathf.Abs (newArea - trapezoidArea) <= epsilon;
 		}
 	}

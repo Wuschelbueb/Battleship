@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		for (int i = 1; i < PlayerList.Count; i++) {
-			while (playerAngles.Take (i - 1).Count (a => Math.Abs(a - playerAngles [i]) < angleBetweenTeammembers / 2 * Mathf.Deg2Rad) > 0) {
+			while (playerAngles.Take (i).Count (a => Math.Abs(a - playerAngles [i]) < angleBetweenTeammembers / 2 * Mathf.Deg2Rad) > 0) {
 				playerAngles [i] += angleBetweenTeammembers * Mathf.Deg2Rad;
 			}
 		}

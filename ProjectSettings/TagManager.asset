@@ -9,6 +9,7 @@ TagManager:
   - CannonBall
   - Ship
   - Terrain
+  - Terrain Chunk
   layers:
   - Default
   - TransparentFX

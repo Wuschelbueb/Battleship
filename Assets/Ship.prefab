@@ -3192,8 +3192,8 @@ MonoBehaviour:
   MaxFireDelay: 0.7
   ReloadTime: 1.5
   CompassMaterial: {fileID: 2100000, guid: 315b856832ddf42f6811c02ebc738870, type: 2}
-  HitPoints: 5
-  MaxTimeAllowedOffscreen: 0
+  HitPoints: 60
+  MaxTimeAllowedOffscreen: 500
   playerData:
     FactionCode: 0
     Name: 

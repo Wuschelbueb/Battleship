@@ -243,8 +243,9 @@ public class Ship : MonoBehaviour {
         }
         if (collider.tag == "Terrain")
         {
-            Debug.Log("Hit something");
-            this.TakeDamage(70);
+            Debug.Log(gameObject.name +"collided with terrain.");
+            this.TakeDamage(this.HitPoints);
+            this.Speed = 0;
         }
     }
 

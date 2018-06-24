@@ -39,6 +39,10 @@ public class EndScreen : MonoBehaviour {
         /*foreach (var item in GameManager.Instance.PlayerList) {
 			item.Ship.SelfDestory (item);
 		}*/
+        foreach (GameObject cannonBall in GameObject.FindGameObjectsWithTag("CannonBall"))
+        {
+            GameObject.Destroy(cannonBall);
+        }
         GameManager.Instance.music.Stop();
 		Menu.Instance.Show ();
 	}
